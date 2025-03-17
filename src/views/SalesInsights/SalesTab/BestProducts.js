@@ -19,7 +19,7 @@ export default function BestProducts() {
             <dt className="truncate text-m font-medium text-gray-700">
               {item.name}
             </dt>
-            <dd className="mt-1 text-2xl font-semibold tracking-tight text-indigo-600">
+            <dd className="mt-1 text-2xl font-semibold tracking-tight text-blue-600">
               {item.stat}
             </dd>
           </div>

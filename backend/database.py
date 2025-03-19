@@ -4,7 +4,7 @@ from dotenv import load_dotenv, find_dotenv
 import os
 import datetime
 from collections import defaultdict
-from models import Ingredient
+from models import Ingredient, MenuItem
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -17,11 +17,15 @@ if not connection_string:
 client = motor.motor_asyncio.AsyncIOMotorClient(connection_string) 
 db = client.shelflyfe
 ingredients_collection = db.ingredients.with_options(write_concern=WriteConcern("majority"))
+menu_items_collection = db.menu_items.with_options(write_concern=WriteConcern("majority"))
 
 async def shutdown_db_client():
-    await ingredients_collection.drop()
-    client.close()
-
+    try:
+        await ingredients_collection.drop()
+        client.close()
+    except Exception as e:
+        raise e
+    
 async def startup_db_client():
     try:
         await client.admin.command("ping")
@@ -29,7 +33,56 @@ async def startup_db_client():
     except Exception as e:
         print(f"Failed to connect to MongoDB: {e}")
 
-async def add_ingredient_db(ingredient: Ingredient):
-    data = ingredient.dict(by_alias=True)
-    data["sku"] = ingredient.sku
-    await ingredients_collection.insert_one(data)
+async def create_ingredient_db(ingredient: Ingredient):
+    try:
+        data = ingredient.dict(by_alias=True)
+        data["sku"] = ingredient.sku
+        await ingredients_collection.insert_one(data)
+    except Exception as e:
+        raise e
+    
+async def get_ingredient_db(sku: str):
+    try:
+        ingredient = await ingredients_collection.find_one({"_id": sku})
+        return ingredient
+    except Exception as e:
+        raise e
+    
+async def delete_ingredient_db(sku: str):
+    try:
+        await ingredients_collection.delete_one({"_id": sku})
+    except Exception as e:
+        raise e
+    
+async def update_ingredient_db(sku: str, ingredient: Ingredient):
+    try:
+        await ingredients_collection.replace_one({"_id":sku}, ingredient.dict(by_alias=True))
+    except Exception as e:
+        raise e
+    
+async def create_menu_item_db(menu_item: MenuItem):
+    try:
+        data = menu_item.dict(by_alias=True)
+        await menu_items_collection.insert_one(data)
+    except Exception as e:
+        raise e
+    
+async def get_menu_item_db(id: str):
+    try:
+        menu_item = await menu_items_collection.find_one({"_id": id})
+        return menu_item
+    except Exception as e:
+        raise e
+
+async def delete_menu_item_db(id: str):
+    try:
+        await menu_items_collection.delete_one({"_id": id})
+    except Exception as e:
+        raise e
+
+async def update_menu_item_db(id: str, menu_item: MenuItem):
+    try:
+        await menu_items_collection.replace_one({"_id":id}, menu_item.dict(by_alias=True))
+    except Exception as e:
+        raise e
+    

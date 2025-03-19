@@ -1,6 +1,9 @@
 # Shelflife
 
 ## Installation and running the backend
+
+Python 3.13 must be used (download at https://www.python.org/)
+
 1. Clone the repository
 2. Cd into the **backend** directory
 3. Install **pipenv** if not already installed 

@@ -51,6 +51,12 @@ const navigation = [
     icon: BanknotesIcon,
     current: false,
   },
+  {
+    name: "Menu Manager",
+    href: "menu-manager",
+    icon: TableCellsIcon,
+    current: false,
+  },
 ];
 
 const userNavigation = [

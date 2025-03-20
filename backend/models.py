@@ -6,16 +6,21 @@ from datetime import datetime
 class Ingredient(BaseModel):
     sku: str = Field(..., alias="_id")
     name: str
-    quantity: int
+    stock: int
     price: Optional[float] = None
     expiry_date: datetime
-    monthIncrease: Optional[int] = None
-    yearIncrease: Optional[int] = None 
-    orders: int = 0
+    monthIncrease: Optional[str] = None
+    yearIncrease: Optional[str] = None 
+    orders: int
+    stock_measurement: str
+    warningStockAmount: int
 
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+
+    def __str__(self):
+        return f"sku: {self.sku}, name: {self.name}, stock: {self.stock}, price: {self.price}, expiry_date: {self.expiry_date}, monthIncrease: {self.monthIncrease}, yearIncrease: {self.yearIncrease}, orders: {self.orders}, stock_measurement: {self.stock_measurement}, warningStockAmount: {self.warningStockAmount}"
 
 class MenuItem(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id")
@@ -30,3 +35,16 @@ class MenuItem(BaseModel):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+
+class IngredientCreate(BaseModel):
+    sku: str
+    name: str
+    stock: int
+    price: float
+    expiry_date: str
+    customUnit: str
+    threshold: int
+    unit: str
+
+    def __str__(self):
+        return f"sku: {self.sku}, name: {self.name}, stock: {self.stock}, price: {self.price}, expiry_date: {self.expiry_date}, customUnit: {self.customUnit}, threshold: {self.threshold}, unit: {self.unit}"

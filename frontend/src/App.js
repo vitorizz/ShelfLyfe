@@ -5,6 +5,7 @@ import Dashboard from "./views/Dashboard/Dashboard";
 import IngredientTracker from "./views/IngredientTracking/IngredientTracker";
 import SalesDashboard from "./views/SalesInsights/SalesDashboard";
 import Settings from "./views/Settings/Settings";
+import MenuManager from "./views/MenuManager/MenuManager";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="ingredient-tracker" element={<IngredientTracker />} />
             <Route path="sales-insights" element={<SalesDashboard />} />
+            <Route path="menu-manager" element={<MenuManager />} />
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>

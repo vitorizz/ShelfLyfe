@@ -5,7 +5,7 @@ import os
 import datetime
 import json
 from collections import defaultdict
-from models import Ingredient, MenuItem
+from models import Ingredient, MenuItem, IngredientCreate
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -27,6 +27,8 @@ async def shutdown_db_client():
     except Exception as e:
         raise e
     
+from datetime import datetime
+
 async def startup_db_client():
     try:
         await client.admin.command("ping")
@@ -40,8 +42,19 @@ async def startup_db_client():
             menu_items_count = await menu_items_collection.count_documents({})
             
             if ingredients_count == 0 and menu_items_count == 0:
+                ingredients_data = data["ingredients"]
 
-                await ingredients_collection.insert_many(data["ingredients"])
+                for ingredient in ingredients_data:
+                    if "expiry_date" in ingredient and isinstance(ingredient["expiry_date"], str):
+                        try:
+                            ingredient["expiry_date"] = datetime.strptime(
+                                ingredient["expiry_date"], "%Y-%m-%d"
+                            )
+                        except ValueError:
+                            print(f"Warning: Invalid date format for ingredient {ingredient.get('name', 'unknown')}: {ingredient['expiry_date']}")
+                            ingredient["expiry_date"] = datetime.now()
+
+                await ingredients_collection.insert_many(ingredients_data)
                 print(f"Data successfully loaded into MongoDB collection '{ingredients_collection.name}'")
 
             else:
@@ -74,9 +87,22 @@ async def delete_ingredient_db(sku: str):
     except Exception as e:
         raise e
     
-async def update_ingredient_db(sku: str, ingredient: Ingredient):
+async def update_ingredient_db(sku: str, ingredient: IngredientCreate):
     try:
-        await ingredients_collection.replace_one({"_id":sku}, ingredient.dict(by_alias=True))
+        prevIngredient = await get_ingredient_db(sku)
+        ingredientCreate = Ingredient(
+            _id=sku,
+            name=ingredient.name,
+            stock=ingredient.stock,
+            price=ingredient.price,
+            expiry_date=datetime.strptime(ingredient.expiry_date, "%Y-%m-%d"),  
+            monthIncrease=prevIngredient["monthIncrease"],
+            yearIncrease=prevIngredient["yearIncrease"], 
+            orders=prevIngredient["orders"],
+            stock_measurement=ingredient.customUnit if ingredient.customUnit else ingredient.unit,
+            warningStockAmount=ingredient.threshold
+        )
+        await ingredients_collection.replace_one({"_id":sku}, ingredientCreate.dict(by_alias=True))
     except Exception as e:
         raise e
     
@@ -114,4 +140,12 @@ async def get_all_ingredients_db():
         return ingredients
     except Exception as e:
         raise e
-    
+
+async def get_all_expired_ingredients_db():
+    try:
+        ingredients = []
+        async for ingredient in ingredients_collection.find({"expiry_date": {"$lt": datetime.datetime.now()}}):
+            ingredients.append(ingredient)
+        return ingredients
+    except Exception as e:
+        raise e

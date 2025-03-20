@@ -2,8 +2,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from database import *
+from datetime import datetime
 from models import (
-    Ingredient
+    Ingredient, IngredientCreate
 )
 from typing import List
 
@@ -27,10 +28,25 @@ async def shutdown():
     await shutdown_db_client()
 
 @app.post("/add-ingredient")
-async def add_ingredient(sku: str, name: str, quantity:int):
+async def add_ingredient(ingredient: IngredientCreate):
     try:
-        ingredient = Ingredient(sku=sku, name=name, quantity=quantity)
-        await create_ingredient_db(ingredient)
+        if await get_ingredient_db(ingredient.sku):
+            raise HTTPException(status_code=400, detail="Ingredient already exists")
+        
+        ingredientCreate = Ingredient(
+            _id=ingredient.sku,
+            name=ingredient.name,
+            stock=ingredient.stock,
+            price=ingredient.price,
+            expiry_date=datetime.strptime(ingredient.expiry_date, "%Y-%m-%d"),  
+            monthIncrease="0%",
+            yearIncrease="0%", 
+            orders=1,
+            stock_measurement=ingredient.customUnit if ingredient.customUnit else ingredient.unit,
+            warningStockAmount=ingredient.threshold
+        )
+        await create_ingredient_db(ingredientCreate)
+
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to create ingredient: {e}")
     
@@ -46,7 +62,6 @@ async def get_ingredient(sku: str):
 async def get_all_ingredients():
     try:
         ingredients = await get_all_ingredients_db()
-        print(ingredients)
         return ingredients
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get all ingredients: {e}")
@@ -59,10 +74,9 @@ async def delete_ingredient(sku: str):
         raise HTTPException(status_code=400, detail=f"Failed to delete ingredient: {e}")
 
 @app.put("/update-ingredient")
-async def update_ingredient(sku: str, name: str, quantity:int):
+async def update_ingredient(ingredient: IngredientCreate):
     try:
-        ingredient = Ingredient(sku=sku, name=name, quantity=quantity)
-        await update_ingredient_db(sku, ingredient)
+        await update_ingredient_db(ingredient.sku, ingredient)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to update ingredient: {e}")
     
@@ -96,6 +110,14 @@ async def update_menu_item(id: str, name: str, ingredients: List[Ingredient], pr
         await update_menu_item_db(id, menu_item)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to update menu item: {e}")
+
+@app.get("/get-all-expired-ingredients")
+async def get_all_expired_ingredients():
+    try:
+        ingredients = await get_all_expired_ingredients_db()
+        return ingredients
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to get all expired ingredients: {e}")
 
 if __name__ == "__main__":
     import uvicorn

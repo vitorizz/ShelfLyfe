@@ -205,7 +205,7 @@ const InventoryPage = () => {
                     {ingredient.orders}
                   </td>
                   <td className="px-2 py-2 text-sm text-gray-900">
-                    {ingredient.expiry_date}
+                    {ingredient.expiry_date ? ingredient.expiry_date.split("T")[0] : ""}
                   </td>
                   <td className="px-2 py-2 text-sm text-gray-900">
                     {ingredient.monthIncrease}

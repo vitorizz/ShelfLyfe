@@ -6,12 +6,13 @@ from datetime import datetime
 class Ingredient(BaseModel):
     sku: str = Field(..., alias="_id")
     name: str
-    quantity: int
+    stock: int
     price: Optional[float] = None
     expiry_date: datetime
-    monthIncrease: Optional[int] = None
-    yearIncrease: Optional[int] = None 
+    monthIncrease: Optional[str] = None
+    yearIncrease: Optional[str] = None 
     orders: int = 0
+    stock_measurement: str
 
     class Config:
         populate_by_name = True

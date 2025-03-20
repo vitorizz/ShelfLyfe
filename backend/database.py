@@ -3,6 +3,7 @@ from pymongo import WriteConcern
 from dotenv import load_dotenv, find_dotenv
 import os
 import datetime
+import json
 from collections import defaultdict
 from models import Ingredient, MenuItem
 from dotenv import load_dotenv, find_dotenv
@@ -30,6 +31,25 @@ async def startup_db_client():
     try:
         await client.admin.command("ping")
         print("Connected to MongoDB")
+
+        try:
+            with open('data.json', 'r') as file:
+                data = json.load(file)
+
+            ingredients_count = await ingredients_collection.count_documents({})
+            menu_items_count = await menu_items_collection.count_documents({})
+            
+            if ingredients_count == 0 and menu_items_count == 0:
+
+                await ingredients_collection.insert_many(data["ingredients"])
+                print(f"Data successfully loaded into MongoDB collection '{ingredients_collection.name}'")
+
+            else:
+                print(f"Collection '{ingredients_collection.name}' already contains data. Skipping import.")
+                
+        except Exception as e:
+            print(f"Error loading data into MongoDB: {str(e)}")
+        
     except Exception as e:
         print(f"Failed to connect to MongoDB: {e}")
 
@@ -83,6 +103,15 @@ async def delete_menu_item_db(id: str):
 async def update_menu_item_db(id: str, menu_item: MenuItem):
     try:
         await menu_items_collection.replace_one({"_id":id}, menu_item.dict(by_alias=True))
+    except Exception as e:
+        raise e
+    
+async def get_all_ingredients_db():
+    try:
+        ingredients = []
+        async for ingredient in ingredients_collection.find():
+            ingredients.append(ingredient)
+        return ingredients
     except Exception as e:
         raise e
     

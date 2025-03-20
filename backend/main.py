@@ -42,6 +42,15 @@ async def get_ingredient(sku: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get ingredient: {e}")
 
+@app.get("/get-all-ingredients")
+async def get_all_ingredients():
+    try:
+        ingredients = await get_all_ingredients_db()
+        print(ingredients)
+        return ingredients
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to get all ingredients: {e}")
+
 @app.delete("/delete-ingredient")
 async def delete_ingredient(sku: str):
     try:

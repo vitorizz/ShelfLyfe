@@ -46,6 +46,12 @@ const navigation = [
     current: false,
   },
   {
+    name: "Manage Ingredients",
+    href: "manage-ingredients",
+    icon: WrenchIcon,
+    current: false,
+  },
+  {
     name: "Sales Insights",
     href: "sales-insights",
     icon: BanknotesIcon,
@@ -55,6 +61,12 @@ const navigation = [
     name: "Menu Manager",
     href: "menu-manager",
     icon: TableCellsIcon,
+    current: false,
+  },
+  {
+    name: "Predictive Analytics",
+    href: "predictive-analytics",
+    icon: PresentationChartLineIcon,
     current: false,
   },
 ];
@@ -158,7 +170,7 @@ export default function SupplierMenu({ children }) {
                                     item.current
                                       ? "bg-gray-50 text-blue-600"
                                       : "text-gray-700 hover:text-blue-600 hover:bg-gray-50",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                    "group flex gap-x-4 rounded-md p-3 text-lg leading-7 font-semibold"
                                   )}
                                 >
                                   <item.icon
@@ -166,7 +178,7 @@ export default function SupplierMenu({ children }) {
                                       item.current
                                         ? "text-blue-600"
                                         : "text-gray-400 group-hover:text-blue-600",
-                                      "h-6 w-6 shrink-0"
+                                      "h-8 w-8 shrink-0"
                                     )}
                                     aria-hidden="true"
                                   />
@@ -180,7 +192,7 @@ export default function SupplierMenu({ children }) {
                           <Link
                             onClick={() => onPathChange("settings")}
                             to={"settings"}
-                            className={`group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 ${
+                            className={`group -mx-2 flex gap-x-4 rounded-md p-3 text-sm font-semibold leading-7 ${
                               currentPath === "settings"
                                 ? "bg-gray-50 text-blue-600"
                                 : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
@@ -230,7 +242,7 @@ export default function SupplierMenu({ children }) {
                             item.current
                               ? "bg-gray-50 text-blue-600"
                               : "text-gray-700 hover:text-blue-600 hover:bg-gray-50",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                            "group flex gap-x-4 rounded-md p-3 text-lg leading-7 font-semibold"
                           )}
                         >
                           <item.icon
@@ -238,7 +250,7 @@ export default function SupplierMenu({ children }) {
                               item.current
                                 ? "text-blue-600"
                                 : "text-gray-400 group-hover:text-blue-600",
-                              "h-6 w-6 shrink-0"
+                              "h-8 w-8 shrink-0"
                             )}
                             aria-hidden="true"
                           />
@@ -252,14 +264,14 @@ export default function SupplierMenu({ children }) {
                   <Link
                     onClick={() => onPathChange("settings")}
                     to={"/settings"}
-                    className={`group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 ${
+                    className={`group -mx-2 flex gap-x-4 rounded-md p-3 text-sm font-semibold leading-7 ${
                       currentPath === "/settings"
                         ? "bg-gray-50 text-blue-600"
                         : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
                     }`}
                   >
                     <Cog6ToothIcon
-                      className={`h-6 w-6 shrink-0 ${
+                      className={`h-8 w-8 shrink-0 ${
                         currentPath === "/settings"
                           ? "text-blue-600"
                           : "text-gray-400 group-hover:text-blue-600"
@@ -362,7 +374,7 @@ export default function SupplierMenu({ children }) {
                               to={item.href}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                "block px-4 py-1 text-sm leading-7 text-gray-900"
                               )}
                             >
                               {item.name}

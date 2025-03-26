@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import IngredientTable from "./IngredientTable";
 import IngredientForm from "./IngredientForm";
+import {
+  getAllIngredients,
+  addIngredient,
+  updateIngredientAPI,
+  deleteIngredientAPI,
+} from "../../api/ingredients";
 
 export default function IngredientManagement() {
   const [ingredients, setIngredients] = useState([]);
@@ -14,11 +20,7 @@ export default function IngredientManagement() {
     const fetchIngredients = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:8000/get-all-ingredients");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await getAllIngredients();
         const validUnits = ["individual", "bags", "cartons", "kgs", "bunches"];
         const mapped = data.map((item) => {
           let unit, customUnit;
@@ -50,10 +52,9 @@ export default function IngredientManagement() {
         setIsLoading(false);
       }
     };
-  
+
     fetchIngredients();
   }, []);
-  
 
   const filteredIngredients = ingredients.filter(
     (ingredient) =>
@@ -61,82 +62,41 @@ export default function IngredientManagement() {
       ingredient.sku.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const addIngredient = (ingredient) => {
-    console.log("Ingredient:", ingredient);
-    const payload = {
-      sku: ingredient.sku,
-      name: ingredient.name,
-      stock: ingredient.stock,
-      price: ingredient.price,
-      threshold: ingredient.threshold,
-      unit: ingredient.unit,
-      customUnit: ingredient.customUnit,
-      expiry_date: ingredient.expiryDate,
-    };
-    console.log(JSON.stringify(payload));
-    fetch("http://localhost:8000/add-ingredient", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to add ingredient");
-        return res.json();
-      })
-      .then(() => {
-        setIngredients([...ingredients, { ...ingredient, id: ingredient.sku }]);
-      })
-      .catch((err) => console.error(err));
-  };
-  
-
-  const updateIngredient = (updatedIngredient) => {
-    console.log("Ingredient:", updatedIngredient);
-    const payload = {
-      sku: updatedIngredient.sku,
-      name: updatedIngredient.name,
-      stock: updatedIngredient.stock,
-      price: updatedIngredient.price,
-      threshold: updatedIngredient.threshold,
-      unit: updatedIngredient.unit,
-      customUnit: updatedIngredient.customUnit,
-      expiry_date: updatedIngredient.expiryDate,
-    };
-    fetch("http://localhost:8000/update-ingredient", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to update ingredient");
-        return res.json();
-      })
-      .then(() => {
-        setIngredients(
-          ingredients.map((ingredient) =>
-            ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient
-          )
-        );
-        setSelectedIngredient(updatedIngredient);
-      })
-      .catch((err) => console.error(err));
+  const handleAddIngredient = async (ingredient) => {
+    try {
+      const data = await addIngredient(ingredient);
+      setIngredients([...ingredients, { ...ingredient, id: ingredient.sku }]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deleteIngredient = (id) => {
-    fetch(`http://localhost:8000/delete-ingredient?sku=${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to delete ingredient");
-        return res.json();
-      })
-      .then(() => {
-        setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
-        if (selectedIngredient?.id === id) {
-          setSelectedIngredient(null);
-        }
-      })
-      .catch((err) => console.error(err));
+  const handleUpdateIngredient = async (updatedIngredient) => {
+    try {
+      await updateIngredientAPI(updatedIngredient);
+      setIngredients(
+        ingredients.map((ingredient) =>
+          ingredient.id === updatedIngredient.id
+            ? updatedIngredient
+            : ingredient
+        )
+      );
+      setSelectedIngredient(updatedIngredient);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteIngredient = async (id) => {
+    try {
+      await deleteIngredientAPI(id);
+      setIngredients(ingredients.filter((ingredient) => ingredient.id !== id));
+      if (selectedIngredient?.id === id) {
+        setSelectedIngredient(null);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (isLoading) {
@@ -193,9 +153,9 @@ export default function IngredientManagement() {
           <div className="p-4">
             <IngredientForm
               selectedIngredient={selectedIngredient}
-              onAdd={addIngredient}
-              onUpdate={updateIngredient}
-              onDelete={deleteIngredient}
+              onAdd={handleAddIngredient}
+              onUpdate={handleUpdateIngredient}
+              onDelete={handleDeleteIngredient}
               onCancel={() => setSelectedIngredient(null)}
             />
           </div>

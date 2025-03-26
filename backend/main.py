@@ -96,6 +96,14 @@ async def get_menu_item(id: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get menu item: {e}")
     
+@app.get("/get-all-menu-items")
+async def get_all_menu_items():
+    try:
+        menu_items = await get_all_menu_items_db()
+        return menu_items
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to get all menu items: {e}")
+    
 @app.delete("/delete-menu-item")
 async def delete_menu_item(id: str):
     try:

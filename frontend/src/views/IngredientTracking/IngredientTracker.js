@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import ProductTrendsModal from "./ProductTrendsModal";
 import OrderActivityModal from "./OrderActivityModal";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
+import { getAllIngredients } from "../../api/ingredients";
 
 const InventoryPage = () => {
   const [ingredients, setIngredients] = useState([]);
-  const [selectedActivityIngredient, setSelectedActivityIngredient] = useState(null);
-  const [selectedTrendsIngredient, setSelectedTrendsIngredient] = useState(null);
+  const [selectedActivityIngredient, setSelectedActivityIngredient] =
+    useState(null);
+  const [selectedTrendsIngredient, setSelectedTrendsIngredient] =
+    useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredIngredients, setFilteredIngredients] = useState([]);
   const [sortConfig, setSortConfig] = useState({
@@ -22,11 +25,7 @@ const InventoryPage = () => {
     const fetchIngredients = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:8000/get-all-ingredients");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await getAllIngredients();
         setIngredients(data);
         setFilteredIngredients(data);
         setError(null);
@@ -205,7 +204,9 @@ const InventoryPage = () => {
                     {ingredient.orders}
                   </td>
                   <td className="px-2 py-2 text-sm text-gray-900">
-                    {ingredient.expiry_date ? ingredient.expiry_date.split("T")[0] : ""}
+                    {ingredient.expiry_date
+                      ? ingredient.expiry_date.split("T")[0]
+                      : ""}
                   </td>
                   <td className="px-2 py-2 text-sm text-gray-900">
                     {ingredient.monthIncrease}

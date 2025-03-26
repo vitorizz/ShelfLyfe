@@ -1,17 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaUtensils, FaHamburger, FaIceCream } from "react-icons/fa";
 import { FiEdit, FiTrash2, FiX } from "react-icons/fi";
-import dummyRecipes from "./DummyRecipes";
+import { getAllMenuItems } from "../../api/menu-items";
 
 export default function MenuManager() {
   // State for selected category and recipe details
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [recipes, setRecipes] = useState(dummyRecipes);
+  const [recipes, setRecipes] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [newIngredient, setNewIngredient] = useState("");
   const [newIngredientName, setNewIngredientName] = useState("");
   const [newIngredientUnits, setNewIngredientUnits] = useState("");
   const [newIngredientAmount, setNewIngredientAmount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getAllMenuItems();
+        setRecipes(data);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch recipes: " + err.message);
+        console.error("Error fetching recipes:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecipes();
+  });
 
   // Delete a recipe with confirmation
   const handleDeleteRecipe = (category, recipeId) => {
@@ -73,6 +93,14 @@ export default function MenuManager() {
     }));
     setNewIngredient("");
   };
+
+  if (isLoading) {
+    return <div className="text-center p-8">Loading menu items...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center p-8 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start overflow-hidden p-4">

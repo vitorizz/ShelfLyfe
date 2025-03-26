@@ -1,21 +1,280 @@
 {
-    "ingredients":[
-        {"_id": "APL001", "name": "Apple", "sku": "APL001", "stock": 120, "price": "0.99", "orders": 200, "monthIncrease": "5%", "yearIncrease": "10%", "stock_measurement": "individual", "expiry_date": "2025-06-23", "warningStockAmount": 10},
-        {"_id": "BNN002", "name": "Banana", "sku": "BNN002", "stock": 150, "price": "0.59", "orders": 180, "monthIncrease": "3%", "yearIncrease": "8%", "stock_measurement": "bunches", "expiry_date": "2025-07-10", "warningStockAmount": 15},
-        {"_id": "CHY003", "name": "Cherry", "sku": "CHY003", "stock": 90, "price": "2.99", "orders": 75, "monthIncrease": "4%", "yearIncrease": "12%", "stock_measurement": "kgs", "expiry_date": "2025-06-30", "warningStockAmount": 13},
-        {"_id": "DAT004", "name": "Date", "sku": "DAT004", "stock": 50, "price": "3.49", "orders": 50, "monthIncrease": "2%", "yearIncrease": "7%", "stock_measurement": "kgs", "expiry_date": "2024-08-15", "warningStockAmount": 10},
-        {"_id": "ELD005", "name": "Elderberry", "sku": "ELD005", "stock": 30, "price": "1.99", "orders": 20, "monthIncrease": "1%", "yearIncrease": "3%", "stock_measurement": "cartons", "expiry_date": "2025-09-05", "warningStockAmount": 10},
-        {"_id": "FIG006", "name": "Fig", "sku": "FIG006", "stock": 60, "price": "0.89", "orders": 100, "monthIncrease": "6%", "yearIncrease": "15%", "stock_measurement": "kgs", "expiry_date": "2025-07-20", "warningStockAmount": 10},
-        {"_id": "GRP007", "name": "Grape", "sku": "GRP007", "stock": 200, "price": "0.79", "orders": 220, "monthIncrease": "5%", "yearIncrease": "10%", "stock_measurement": "cartons", "expiry_date": "2025-07-25", "warningStockAmount": 10},
-        {"_id": "HND008", "name": "Honeydew", "sku": "HND008", "stock": 80, "price": "1.29", "orders": 60, "monthIncrease": "3%", "yearIncrease": "9%", "stock_measurement": "individual", "expiry_date": "2025-08-05", "warningStockAmount": 10},
-        {"_id": "IVG009", "name": "Ivy Gourd", "sku": "IVG009", "stock": 40, "price": "4.99", "orders": 30, "monthIncrease": "2%", "yearIncrease": "11%", "stock_measurement": "kgs", "expiry_date": "2025-10-12", "warningStockAmount": 10},
-        {"_id": "JKF010", "name": "Jackfruit", "sku": "JKF010", "stock": 70, "price": "1.49", "orders": 85, "monthIncrease": "4%", "yearIncrease": "14%", "stock_measurement": "individual", "expiry_date": "2025-09-30", "warningStockAmount": 10},
-        {"_id": "KIW011", "name": "Kiwi", "sku": "KIW011", "stock": 120, "price": "0.99", "orders": 150, "monthIncrease": "5%", "yearIncrease": "13%", "stock_measurement": "individual", "expiry_date": "2025-07-22", "warningStockAmount": 10},
-        {"_id": "LEM012", "name": "Lemon", "sku": "LEM012", "stock": 160, "price": "0.29", "orders": 200, "monthIncrease": "3%", "yearIncrease": "8%", "stock_measurement": "bags", "expiry_date": "2025-08-18", "warningStockAmount": 10},
-        {"_id": "MNG013", "name": "Mango", "sku": "MNG013", "stock": 90, "price": "0.79", "orders": 120, "monthIncrease": "4%", "yearIncrease": "12%", "stock_measurement": "individual", "expiry_date": "2025-07-29", "warningStockAmount": 10},
-        {"_id": "NCT014", "name": "Nectarine", "sku": "NCT014", "stock": 110, "price": "1.29", "orders": 95, "monthIncrease": "2%", "yearIncrease": "7%", "stock_measurement": "individual", "expiry_date": "2025-09-15", "warningStockAmount": 10},
-        {"_id": "ORG015", "name": "Orange", "sku": "ORG015", "stock": 200, "price": "0.59", "orders": 210, "monthIncrease": "3%", "yearIncrease": "9%", "stock_measurement": "bags", "expiry_date": "2025-07-30", "warningStockAmount": 10},
-        {"_id": "PAP016", "name": "Papaya", "sku": "PAP016", "stock": 80, "price": "1.99", "orders": 70, "monthIncrease": "4%", "yearIncrease": "90%", "stock_measurement": "grams", "expiry_date": "2025-08-22", "warningStockAmount": 10}
-      ]
-
+  "ingredients": [
+    {
+      "_id": "APL001",
+      "name": "Apple",
+      "sku": "APL001",
+      "stock": 120,
+      "price": "0.99",
+      "orders": 200,
+      "monthIncrease": "5%",
+      "yearIncrease": "10%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-06-23",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "BNN002",
+      "name": "Banana",
+      "sku": "BNN002",
+      "stock": 150,
+      "price": "0.59",
+      "orders": 180,
+      "monthIncrease": "3%",
+      "yearIncrease": "8%",
+      "stock_measurement": "bunches",
+      "expiry_date": "2025-07-10",
+      "warningStockAmount": 15
+    },
+    {
+      "_id": "CHY003",
+      "name": "Cherry",
+      "sku": "CHY003",
+      "stock": 90,
+      "price": "2.99",
+      "orders": 75,
+      "monthIncrease": "4%",
+      "yearIncrease": "12%",
+      "stock_measurement": "kgs",
+      "expiry_date": "2025-06-30",
+      "warningStockAmount": 13
+    },
+    {
+      "_id": "DAT004",
+      "name": "Date",
+      "sku": "DAT004",
+      "stock": 50,
+      "price": "3.49",
+      "orders": 50,
+      "monthIncrease": "2%",
+      "yearIncrease": "7%",
+      "stock_measurement": "kgs",
+      "expiry_date": "2024-08-15",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "ELD005",
+      "name": "Elderberry",
+      "sku": "ELD005",
+      "stock": 30,
+      "price": "1.99",
+      "orders": 20,
+      "monthIncrease": "1%",
+      "yearIncrease": "3%",
+      "stock_measurement": "cartons",
+      "expiry_date": "2025-09-05",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "FIG006",
+      "name": "Fig",
+      "sku": "FIG006",
+      "stock": 60,
+      "price": "0.89",
+      "orders": 100,
+      "monthIncrease": "6%",
+      "yearIncrease": "15%",
+      "stock_measurement": "kgs",
+      "expiry_date": "2025-07-20",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "GRP007",
+      "name": "Grape",
+      "sku": "GRP007",
+      "stock": 200,
+      "price": "0.79",
+      "orders": 220,
+      "monthIncrease": "5%",
+      "yearIncrease": "10%",
+      "stock_measurement": "cartons",
+      "expiry_date": "2025-07-25",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "HND008",
+      "name": "Honeydew",
+      "sku": "HND008",
+      "stock": 80,
+      "price": "1.29",
+      "orders": 60,
+      "monthIncrease": "3%",
+      "yearIncrease": "9%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-08-05",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "IVG009",
+      "name": "Ivy Gourd",
+      "sku": "IVG009",
+      "stock": 40,
+      "price": "4.99",
+      "orders": 30,
+      "monthIncrease": "2%",
+      "yearIncrease": "11%",
+      "stock_measurement": "kgs",
+      "expiry_date": "2025-10-12",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "JKF010",
+      "name": "Jackfruit",
+      "sku": "JKF010",
+      "stock": 70,
+      "price": "1.49",
+      "orders": 85,
+      "monthIncrease": "4%",
+      "yearIncrease": "14%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-09-30",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "KIW011",
+      "name": "Kiwi",
+      "sku": "KIW011",
+      "stock": 120,
+      "price": "0.99",
+      "orders": 150,
+      "monthIncrease": "5%",
+      "yearIncrease": "13%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-07-22",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "LEM012",
+      "name": "Lemon",
+      "sku": "LEM012",
+      "stock": 160,
+      "price": "0.29",
+      "orders": 200,
+      "monthIncrease": "3%",
+      "yearIncrease": "8%",
+      "stock_measurement": "bags",
+      "expiry_date": "2025-08-18",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "MNG013",
+      "name": "Mango",
+      "sku": "MNG013",
+      "stock": 90,
+      "price": "0.79",
+      "orders": 120,
+      "monthIncrease": "4%",
+      "yearIncrease": "12%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-07-29",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "NCT014",
+      "name": "Nectarine",
+      "sku": "NCT014",
+      "stock": 110,
+      "price": "1.29",
+      "orders": 95,
+      "monthIncrease": "2%",
+      "yearIncrease": "7%",
+      "stock_measurement": "individual",
+      "expiry_date": "2025-09-15",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "ORG015",
+      "name": "Orange",
+      "sku": "ORG015",
+      "stock": 200,
+      "price": "0.59",
+      "orders": 210,
+      "monthIncrease": "3%",
+      "yearIncrease": "9%",
+      "stock_measurement": "bags",
+      "expiry_date": "2025-07-30",
+      "warningStockAmount": 10
+    },
+    {
+      "_id": "PAP016",
+      "name": "Papaya",
+      "sku": "PAP016",
+      "stock": 80,
+      "price": "1.99",
+      "orders": 70,
+      "monthIncrease": "4%",
+      "yearIncrease": "90%",
+      "stock_measurement": "grams",
+      "expiry_date": "2025-08-22",
+      "warningStockAmount": 10
+    }
+  ],
+  "recipes": {
+    "Appetizers": [
+      {
+        "id": 1,
+        "name": "Bruschetta",
+        "description": "Toasted bread with tomato and basil.",
+        "ingredients": [
+          { "id": 1, "name": "Tomatoes", "units": "pcs", "amount": "2" },
+          { "id": 2, "name": "Basil", "units": "bunch", "amount": "1" },
+          { "id": 3, "name": "Garlic", "units": "cloves", "amount": "3" }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Stuffed Mushrooms",
+        "description": "Mushrooms filled with cheese and herbs.",
+        "ingredients": [
+          { "id": 4, "name": "Mushrooms", "units": "pcs", "amount": "8" },
+          { "id": 5, "name": "Cream Cheese", "units": "oz", "amount": "4" },
+          { "id": 6, "name": "Parsley", "units": "bunch", "amount": "1" }
+        ]
+      }
+    ],
+    "Mains": [
+      {
+        "id": 3,
+        "name": "Grilled Salmon",
+        "description": "Fresh salmon grilled with lemon and herbs.",
+        "ingredients": [
+          { "id": 7, "name": "Salmon", "units": "lbs", "amount": "1" },
+          { "id": 8, "name": "Lemon", "units": "pcs", "amount": "1" },
+          { "id": 9, "name": "Dill", "units": "sprigs", "amount": "3" }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Chicken Parmesan",
+        "description": "Breaded chicken breast topped with marinara and cheese.",
+        "ingredients": [
+          { "id": 10, "name": "Chicken Breast", "units": "pcs", "amount": "2" },
+          { "id": 11, "name": "Breadcrumbs", "units": "cups", "amount": "1" },
+          { "id": 12, "name": "Marinara", "units": "cups", "amount": "1.5" }
+        ]
+      }
+    ],
+    "Desserts": [
+      {
+        "id": 5,
+        "name": "Cheesecake",
+        "description": "Creamy cheesecake with a graham cracker crust.",
+        "ingredients": [
+          { "id": 13, "name": "Cream Cheese", "units": "lbs", "amount": "1" },
+          { "id": 14, "name": "Sugar", "units": "cups", "amount": "0.5" },
+          { "id": 15, "name": "Eggs", "units": "pcs", "amount": "3" }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Tiramisu",
+        "description": "Coffee-flavored Italian dessert with mascarpone.",
+        "ingredients": [
+          { "id": 16, "name": "Mascarpone", "units": "lbs", "amount": "0.5" },
+          { "id": 17, "name": "Coffee", "units": "cups", "amount": "1" },
+          { "id": 18, "name": "Ladyfingers", "units": "pcs", "amount": "20" }
+        ]
+      }
+    ]
+  }
 }

@@ -23,6 +23,7 @@ menu_items_collection = db.menu_items.with_options(write_concern=WriteConcern("m
 async def shutdown_db_client():
     try:
         await ingredients_collection.drop()
+        await menu_items_collection.drop()
         client.close()
     except Exception as e:
         raise e
@@ -56,6 +57,16 @@ async def startup_db_client():
 
                 await ingredients_collection.insert_many(ingredients_data)
                 print(f"Data successfully loaded into MongoDB collection '{ingredients_collection.name}'")
+
+            recipes_data = []
+            for category, recipes in data.get("recipes", {}).items():
+                for recipe in recipes:
+                    recipe["category"] = category
+                    recipes_data.append(recipe)
+            
+            if recipes_data:
+                await menu_items_collection.insert_many(recipes_data)
+                print(f"Data successfully loaded into MongoDB collection '{menu_items_collection.name}'")
 
             else:
                 print(f"Collection '{ingredients_collection.name}' already contains data. Skipping import.")
@@ -117,6 +128,15 @@ async def get_menu_item_db(id: str):
     try:
         menu_item = await menu_items_collection.find_one({"_id": id})
         return menu_item
+    except Exception as e:
+        raise e
+    
+async def get_all_menu_items_db():
+    try:
+        menu_items = []
+        async for menu_item in menu_items_collection.find():
+            menu_items.append(menu_item)
+        return menu_items
     except Exception as e:
         raise e
 

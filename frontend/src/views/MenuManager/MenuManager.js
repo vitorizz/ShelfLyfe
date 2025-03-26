@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { FaUtensils, FaHamburger, FaIceCream } from "react-icons/fa";
-import { FiEdit, FiTrash2, FiX } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { getAllMenuItems } from "../../api/menu-items";
 
 export default function MenuManager() {
-  // State for selected category and recipe details
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState({}); // Grouped recipes by category
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [newIngredient, setNewIngredient] = useState("");
   const [newIngredientName, setNewIngredientName] = useState("");
   const [newIngredientUnits, setNewIngredientUnits] = useState("");
   const [newIngredientAmount, setNewIngredientAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Group an array of recipes by their category
+  const groupByCategory = (recipesArray) => {
+    return recipesArray.reduce((acc, recipe) => {
+      const category = recipe.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(recipe);
+      return acc;
+    }, {});
+  };
+
   useEffect(() => {
     const fetchRecipes = async () => {
       setIsLoading(true);
       try {
         const data = await getAllMenuItems();
-        setRecipes(data);
+        // Group recipes by category so they can be accessed as recipes["Appetizers"], etc.
+        const grouped = groupByCategory(data);
+        setRecipes(grouped);
         setError(null);
       } catch (err) {
         setError("Failed to fetch recipes: " + err.message);
@@ -31,9 +43,8 @@ export default function MenuManager() {
     };
 
     fetchRecipes();
-  });
+  }, []); // Run only once on mount
 
-  // Delete a recipe with confirmation
   const handleDeleteRecipe = (category, recipeId) => {
     if (window.confirm("Are you sure you want to delete this recipe?")) {
       setRecipes((prevRecipes) => ({
@@ -48,8 +59,7 @@ export default function MenuManager() {
     }
   };
 
-  // Remove an ingredient from a recipe
-  const handleRemoveIngredient = (recipeId, ingredient) => {
+  const handleRemoveIngredient = (recipeId, ingredientId) => {
     setRecipes((prevRecipes) => ({
       ...prevRecipes,
       [selectedCategory]: prevRecipes[selectedCategory].map((recipe) => {
@@ -57,7 +67,7 @@ export default function MenuManager() {
           return {
             ...recipe,
             ingredients: recipe.ingredients.filter(
-              (item) => item !== ingredient
+              (item) => item.id !== ingredientId
             ),
           };
         }
@@ -67,14 +77,24 @@ export default function MenuManager() {
     if (selectedRecipe && selectedRecipe.id === recipeId) {
       setSelectedRecipe((prev) => ({
         ...prev,
-        ingredients: prev.ingredients.filter((item) => item !== ingredient),
+        ingredients: prev.ingredients.filter(
+          (item) => item.id !== ingredientId
+        ),
       }));
     }
   };
 
   // Add a new ingredient to the selected recipe
   const handleAddIngredient = () => {
-    if (newIngredient.trim() === "") return;
+    if (newIngredientName.trim() === "") return;
+    // Create a new ingredient object using input states
+    const newIngredient = {
+      id: Date.now(), // Unique id for demonstration
+      name: newIngredientName,
+      units: newIngredientUnits,
+      amount: newIngredientAmount,
+    };
+
     setRecipes((prevRecipes) => ({
       ...prevRecipes,
       [selectedCategory]: prevRecipes[selectedCategory].map((recipe) => {
@@ -91,7 +111,11 @@ export default function MenuManager() {
       ...prev,
       ingredients: [...prev.ingredients, newIngredient],
     }));
-    setNewIngredient("");
+
+    // Clear input fields
+    setNewIngredientName("");
+    setNewIngredientUnits("");
+    setNewIngredientAmount("");
   };
 
   if (isLoading) {
@@ -152,7 +176,7 @@ export default function MenuManager() {
       </div>
 
       {/* Recipe list and detail view */}
-      {selectedCategory && (
+      {selectedCategory && recipes[selectedCategory] && (
         <div className="w-full flex space-x-10">
           {/* Left column: Recipe list */}
           <div className="w-1/2 bg-white p-6 rounded-lg shadow-md">
@@ -210,28 +234,16 @@ export default function MenuManager() {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th
-                              scope="col"
-                              className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-                            >
+                            <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
                               Name
                             </th>
-                            <th
-                              scope="col"
-                              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                               Units
                             </th>
-                            <th
-                              scope="col"
-                              className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                            >
+                            <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                               Amount Needed
                             </th>
-                            <th
-                              scope="col"
-                              className="relative py-3.5 pl-3 pr-4 sm:pr-3"
-                            >
+                            <th className="relative py-3.5 pl-3 pr-4 sm:pr-3">
                               <span className="sr-only">Remove</span>
                             </th>
                           </tr>

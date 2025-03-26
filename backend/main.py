@@ -1,3 +1,4 @@
+from bson import ObjectId
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -7,6 +8,16 @@ from models import (
     Ingredient, IngredientCreate
 )
 from typing import List
+
+def convert_object_ids(data):
+    if isinstance(data, list):
+        return [convert_object_ids(item) for item in data]
+    elif isinstance(data, dict):
+        return {key: convert_object_ids(value) for key, value in data.items()}
+    elif isinstance(data, ObjectId):
+        return str(data)
+    else:
+        return data
 
 app = FastAPI()
 origins = ['http://localhost:3000', 'http://localhost:8000']
@@ -96,13 +107,13 @@ async def get_menu_item(id: str):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get menu item: {e}")
     
-@app.get("/get-all-menu-items")
+@ app.get("/get-all-menu-items")
 async def get_all_menu_items():
     try:
-        menu_items = await get_all_menu_items_db()
-        return menu_items
+        menu_items = await menu_items_collection.find().to_list(1000)
+        return convert_object_ids(menu_items)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to get all menu items: {e}")
+        raise HTTPException(status_code=400, detail=f"Failed to get menu items: {e}")
     
 @app.delete("/delete-menu-item")
 async def delete_menu_item(id: str):

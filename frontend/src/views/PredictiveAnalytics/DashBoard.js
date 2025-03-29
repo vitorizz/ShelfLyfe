@@ -32,6 +32,8 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState("orders");
+
   // Bar Chart for projected orders over next 6 months
   const barData = {
     labels: ["Mar", "Apr", "May", "Jun", "Jul", "Aug"],
@@ -187,7 +189,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className=" bg-white">
       {/* Main Content */}
       <main className="max-w mx-auto p-6 space-y-10">
         {/* Header with Subtitle */}
@@ -197,7 +199,7 @@ export default function Dashboard() {
               Predictive Analytics Dashboard
             </h1>
             <p className="mt-1 text-sm text-gray-500">
-              Projected orders and meals for the next 6 months
+              Projected orders and dishes for the next 6 months
             </p>
           </div>
           {/* <select className="border border-gray-300 rounded-md px-3 pr-8 py-2 text-sm text-gray-700">
@@ -210,7 +212,7 @@ export default function Dashboard() {
         {/* Tabs */}
         <div className="flex space-x-8 border-b border-gray-200 mb-8">
           <button className="pb-2 text-lg font-medium text-gray-900 border-b-2 border-blue-600">
-            Orders & Meals
+            Orders & Dishes
           </button>
           <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
             Waste Reduction
@@ -259,28 +261,74 @@ export default function Dashboard() {
 
         {/* Side-by-Side: Dish Performance and Top Meals */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Dish Performance by Category (Line Chart with Dropdown) */}
-          <div className="lg:col-span-2 relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-lg font-semibold text-gray-900">
-                Projected Dish Performance by Category
-              </div>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 pr-7 py-2 text-sm text-gray-700"
+          {/* Tabbed charts spanning 2 columns on large screens */}
+          <div className="lg:col-span-2">
+            {/* Tabs */}
+            <div className="flex space-x-8 border-b border-gray-200 mb-8">
+              <button
+                onClick={() => setActiveTab("orders")}
+                className={`pb-2 text-lg font-medium ${
+                  activeTab === "orders"
+                    ? "text-gray-900 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
               >
-                <option value="Appetizers">Appetizers</option>
-                <option value="Mains">Mains</option>
-                <option value="Desserts">Desserts</option>
-              </select>
+                Projected Orders for the Next 6 Months
+              </button>
+              <button
+                onClick={() => setActiveTab("dishPerformance")}
+                className={`pb-2 text-lg font-medium ${
+                  activeTab === "dishPerformance"
+                    ? "text-gray-900 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Projected Dish Performance by Category
+              </button>
             </div>
-            <div className="h-80">
-              <Line data={lineChartData} options={lineChartOptions} />
-            </div>
+
+            {/* Tab Content */}
+            {activeTab === "orders" && (
+              <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow-lg">
+                <div className="mb-2">
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Projected Orders for the Next 6 Months
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    Projected next 6 months of orders with last year's
+                    comparison
+                  </p>
+                </div>
+                <div className="h-80 mt-4">
+                  <Bar data={barDataOrders} options={barOptions} />
+                </div>
+              </div>
+            )}
+
+            {activeTab === "dishPerformance" && (
+              <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-lg font-semibold text-gray-900">
+                    Projected Dish Performance by Category
+                  </div>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="border border-gray-300 rounded-md px-3 pr-7 py-2 text-sm text-gray-700"
+                  >
+                    <option value="Appetizers">Appetizers</option>
+                    <option value="Mains">Mains</option>
+                    <option value="Desserts">Desserts</option>
+                  </select>
+                </div>
+                <div className="h-80">
+                  <Line data={lineChartData} options={lineChartOptions} />
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Top Meals Section */}
+          {/* Top Meals Section in the third column */}
           <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
             <div className="mb-1 text-lg font-semibold text-gray-900">
               Projected Top Dishes
@@ -310,20 +358,6 @@ export default function Dashboard() {
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
-        {/* Bar Chart Section */}
-        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow-lg">
-          <div className="mb-2">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Projected Orders for the Next 6 Months
-            </h2>
-            <p className="text-sm text-gray-500">
-              Projected next 6 months of orders with last year's comparison
-            </p>
-          </div>
-          <div className="h-80 mt-4">
-            <Bar data={barDataOrders} options={barOptions} />
           </div>
         </div>
       </main>

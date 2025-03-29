@@ -8,6 +8,7 @@ import Settings from "./views/Settings/Settings";
 import MenuManager from "./views/MenuManager/MenuManager";
 import PredictiveAnalytics from "./views/PredictiveAnalytics/PredictiveAnalytics";
 import IngredientManagement from "./views/ManageIngredients/IngredientManagement";
+import ResupplyIngredients from "./views/ResupplyIngredients/ResupplyIngredients";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               element={<PredictiveAnalytics />}
             />
             <Route path="manage-ingredients" element={<IngredientManagement />} />
+            <Route path="resupply-ingredients" element={<ResupplyIngredients />} />
           </Route>
         </Routes>
       </Router>

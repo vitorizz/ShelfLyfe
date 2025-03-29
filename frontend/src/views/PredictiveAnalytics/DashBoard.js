@@ -188,24 +188,8 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Tabs */}
-      <div className="flex space-x-8 border-b border-gray-200 mb-8">
-        <button className="pb-2 text-lg font-medium text-gray-900 border-b-2 border-blue-600">
-          Orders & Meals
-        </button>
-        <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-          Waste Reduction
-        </button>
-        <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-          Earnings
-        </button>
-        <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-          Ingredient Demand
-        </button>
-      </div>
-
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto p-6 space-y-10">
+      <main className="max-w mx-auto p-6 space-y-10">
         {/* Header with Subtitle */}
         <div className="flex items-center justify-between">
           <div>
@@ -221,6 +205,22 @@ export default function Dashboard() {
             <option>Weekly</option>
             <option>Daily</option>
           </select> */}
+        </div>
+
+        {/* Tabs */}
+        <div className="flex space-x-8 border-b border-gray-200 mb-8">
+          <button className="pb-2 text-lg font-medium text-gray-900 border-b-2 border-blue-600">
+            Orders & Meals
+          </button>
+          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
+            Waste Reduction
+          </button>
+          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
+            Earnings
+          </button>
+          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
+            Ingredient Demand
+          </button>
         </div>
 
         {/* KPI Cards */}
@@ -264,7 +264,7 @@ export default function Dashboard() {
               Projected Orders for the Next 6 Months
             </h2>
             <p className="text-sm text-gray-500">
-              Month-by-month comparison: This year vs. last year.
+              Projected next 6 months of orders with last year's comparison
             </p>
           </div>
           <div className="h-80 mt-4">
@@ -298,10 +298,10 @@ export default function Dashboard() {
           {/* Top Meals Section */}
           <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
             <div className="mb-1 text-lg font-semibold text-gray-900">
-              Projected Top Meals
+              Projected Top Dishes
             </div>
             <p className="mb-4 text-sm text-gray-500">
-              Most popular meals by order volume
+              Most popular dishes by order volume
             </p>
             <ul className="divide-y divide-gray-100">
               {topMeals.map((meal, idx) => (

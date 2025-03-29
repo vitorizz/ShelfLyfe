@@ -162,14 +162,14 @@ export default function Dashboard() {
       changeType: "up",
     },
     {
-      title: "Most Popular Meal",
+      title: "Projected Most Popular Meal",
       value: "Grilled Salmon",
       icon: FireIcon,
       change: "+245 orders to be placed",
       changeType: "up",
     },
     {
-      title: "Average Daily Orders",
+      title: "Projected Average Daily Orders",
       value: "78",
       icon: ChartBarIcon,
       change: "+13% from last 6 months",
@@ -257,21 +257,6 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Bar Chart Section */}
-        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow-lg">
-          <div className="mb-2">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Projected Orders for the Next 6 Months
-            </h2>
-            <p className="text-sm text-gray-500">
-              Projected next 6 months of orders with last year's comparison
-            </p>
-          </div>
-          <div className="h-80 mt-4">
-            <Bar data={barDataOrders} options={barOptions} />
-          </div>
-        </div>
-
         {/* Side-by-Side: Dish Performance and Top Meals */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Dish Performance by Category (Line Chart with Dropdown) */}
@@ -325,6 +310,20 @@ export default function Dashboard() {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+        {/* Bar Chart Section */}
+        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow-lg">
+          <div className="mb-2">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Projected Orders for the Next 6 Months
+            </h2>
+            <p className="text-sm text-gray-500">
+              Projected next 6 months of orders with last year's comparison
+            </p>
+          </div>
+          <div className="h-80 mt-4">
+            <Bar data={barDataOrders} options={barOptions} />
           </div>
         </div>
       </main>

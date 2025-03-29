@@ -49,6 +49,22 @@ export default function Dashboard() {
     ],
   };
 
+  const barDataOrders = {
+    labels: ["April", "May", "June", "July", "August", "September"],
+    datasets: [
+      {
+        label: "Orders",
+        data: [500, 600, 550, 700, 650, 720], // example values for this year
+        backgroundColor: "#2563EB", // blue-600
+      },
+      {
+        label: "Orders Last Year",
+        data: [450, 580, 530, 680, 640, 700], // example values for last year
+        backgroundColor: "#10B981", // green-500
+      },
+    ],
+  };
+
   const barOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -62,7 +78,7 @@ export default function Dashboard() {
   // Data for line charts by dish category
   const lineChartDataByCategory = {
     Appetizers: {
-      labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
+      labels: ["April", "May", "June", "July", "August", "September"],
       datasets: [
         {
           label: "Spring Rolls",
@@ -81,7 +97,7 @@ export default function Dashboard() {
       ],
     },
     Mains: {
-      labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
+      labels: ["April", "May", "June", "July", "August", "September"],
       datasets: [
         {
           label: "Grilled Salmon",
@@ -107,7 +123,7 @@ export default function Dashboard() {
       ],
     },
     Desserts: {
-      labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6"],
+      labels: ["April", "May", "June", "July", "August", "September"],
       datasets: [
         {
           label: "Cheesecake",
@@ -136,7 +152,7 @@ export default function Dashboard() {
     scales: { x: { grid: { display: false } } },
   };
 
-  // KPI Cards data (unchanged except title update)
+  // KPI Cards data
   const KPIData = [
     {
       title: "Projected Orders (Next 6 Months)",
@@ -149,14 +165,14 @@ export default function Dashboard() {
       title: "Most Popular Meal",
       value: "Grilled Salmon",
       icon: FireIcon,
-      change: "+245 orders placed",
+      change: "+245 orders to be placed",
       changeType: "up",
     },
     {
       title: "Average Daily Orders",
       value: "78",
       icon: ChartBarIcon,
-      change: "+5% from last month",
+      change: "+13% from last 6 months",
       changeType: "up",
     },
   ];
@@ -200,11 +216,11 @@ export default function Dashboard() {
               Projected orders and meals for the next 6 months
             </p>
           </div>
-          <select className="border border-gray-300 rounded-md px-3 pr-8 py-2 text-sm text-gray-700">
+          {/* <select className="border border-gray-300 rounded-md px-3 pr-8 py-2 text-sm text-gray-700">
             <option>Monthly</option>
             <option>Weekly</option>
             <option>Daily</option>
-          </select>
+          </select> */}
         </div>
 
         {/* KPI Cards */}
@@ -242,61 +258,74 @@ export default function Dashboard() {
         </div>
 
         {/* Bar Chart Section */}
-        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
-          <div className="mb-2 text-lg font-semibold text-gray-900">
-            Projected Orders for the Next 6 Months
+        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow-lg">
+          <div className="mb-2">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Projected Orders for the Next 6 Months
+            </h2>
+            <p className="text-sm text-gray-500">
+              Month-by-month comparison: This year vs. last year.
+            </p>
           </div>
-          <div className="h-80">
-            <Bar data={barData} options={barOptions} />
+          <div className="h-80 mt-4">
+            <Bar data={barDataOrders} options={barOptions} />
           </div>
         </div>
 
-        {/* Dropdown & Line Chart for Dish Categories */}
-        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className="text-lg font-semibold text-gray-900">
-              Dish Performance by Category
+        {/* Side-by-Side: Dish Performance and Top Meals */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Dish Performance by Category (Line Chart with Dropdown) */}
+          <div className="lg:col-span-2 relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-lg font-semibold text-gray-900">
+                Projected Dish Performance by Category
+              </div>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="border border-gray-300 rounded-md px-3 pr-7 py-2 text-sm text-gray-700"
+              >
+                <option value="Appetizers">Appetizers</option>
+                <option value="Mains">Mains</option>
+                <option value="Desserts">Desserts</option>
+              </select>
             </div>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700"
-            >
-              <option value="Appetizers">Appetizers</option>
-              <option value="Mains">Mains</option>
-              <option value="Desserts">Desserts</option>
-            </select>
+            <div className="h-80">
+              <Line data={lineChartData} options={lineChartOptions} />
+            </div>
           </div>
-          <div className="h-80">
-            <Line data={lineChartData} options={lineChartOptions} />
-          </div>
-        </div>
 
-        {/* Top Meals Section */}
-        <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
-          <div className="mb-1 text-lg font-semibold text-gray-900">
-            Top Meals
+          {/* Top Meals Section */}
+          <div className="relative overflow-hidden rounded-lg bg-white border border-gray-200 px-6 py-5 shadow">
+            <div className="mb-1 text-lg font-semibold text-gray-900">
+              Projected Top Meals
+            </div>
+            <p className="mb-4 text-sm text-gray-500">
+              Most popular meals by order volume
+            </p>
+            <ul className="divide-y divide-gray-100">
+              {topMeals.map((meal, idx) => (
+                <li
+                  key={idx}
+                  className="py-3 flex justify-between items-center"
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium text-gray-800">
+                      {meal.name}
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {meal.orders} orders
+                    </span>
+                  </div>
+                  {meal.direction === "up" ? (
+                    <ArrowUpIcon className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <ArrowDownIcon className="h-5 w-5 text-red-500" />
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="mb-4 text-sm text-gray-500">
-            Most popular meals by order volume
-          </p>
-          <ul className="divide-y divide-gray-100">
-            {topMeals.map((meal, idx) => (
-              <li key={idx} className="py-3 flex justify-between items-center">
-                <div className="flex flex-col">
-                  <span className="font-medium text-gray-800">{meal.name}</span>
-                  <span className="text-sm text-gray-500">
-                    {meal.orders} orders
-                  </span>
-                </div>
-                {meal.direction === "up" ? (
-                  <ArrowUpIcon className="h-5 w-5 text-green-500" />
-                ) : (
-                  <ArrowDownIcon className="h-5 w-5 text-red-500" />
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
       </main>
     </div>

@@ -155,7 +155,7 @@ export default function IngredientDemand() {
 
   return (
     <div className="bg-white text-gray-800">
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <main className="max-w mx-auto px-4 py-8 space-y-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {kpiData.map((kpi, idx) => (

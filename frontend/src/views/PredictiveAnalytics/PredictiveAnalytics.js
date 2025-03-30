@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OrdersAndDishes from "./OrdersAndDishes";
 import WasteReduction from "./WasteReduction";
+import Earnings from "./Earnings";
 
 export default function PredictiveAnalytics() {
   const [activeTab, setActiveTab] = useState("ordersanddishes");
@@ -12,7 +13,7 @@ export default function PredictiveAnalytics() {
       case "wastereduction":
         return <WasteReduction />;
       case "earnings":
-        return <div>Earnings Component</div>;
+        return <Earnings />;
       case "ingredientdemand":
         return <div>Ingredient Demand Component</div>;
       default:

@@ -37,20 +37,20 @@ export default function WasteReduction() {
   const KPIData = [
     {
       title: "Projected Waste (Next Month)",
-      value: "32.5 kg",
+      value: "28 kg",
       change: "10% reduction possible",
       changeType: "up",
       icon: ArchiveBoxIcon,
     },
     {
-      title: "Potential Savings",
+      title: "Potential Savings (Next Month)",
       value: "$425",
       change: "6 recommended actions taken",
       changeType: "up",
       icon: CurrencyDollarIcon,
     },
     {
-      title: "Items at Risk",
+      title: "Items at Risk (Next Month)",
       value: "3",
       change: "2 fewer than last week",
       changeType: "down",

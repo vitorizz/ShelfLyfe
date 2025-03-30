@@ -25,6 +25,7 @@ import {
   UsersIcon,
   WrenchIcon,
   XMarkIcon,
+  ClipboardDocumentListIcon
 } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
@@ -49,6 +50,12 @@ const navigation = [
     name: "Manage Ingredients",
     href: "manage-ingredients",
     icon: WrenchIcon,
+    current: false,
+  },
+  {
+    name: "Resupply Ingredients",
+    href: "resupply-ingredients",
+    icon: ClipboardDocumentListIcon,
     current: false,
   },
   {

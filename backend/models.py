@@ -48,3 +48,20 @@ class IngredientCreate(BaseModel):
 
     def __str__(self):
         return f"sku: {self.sku}, name: {self.name}, stock: {self.stock}, price: {self.price}, expiry_date: {self.expiry_date}, customUnit: {self.customUnit}, threshold: {self.threshold}, unit: {self.unit}"
+    
+
+class ResupplyIngredientCreate(BaseModel):
+    sku: str
+    id: int
+    isNewIngredient: bool
+    supplier: str
+    name: str
+    stock: int
+    price: float
+    expiryDate: str
+    customUnit: str
+    threshold: int
+    unit: str
+
+    def __str__(self):
+        return f"sku: {self.sku}, name: {self.name}, stock: {self.stock}, price: {self.price}, expiry_date: {self.expiryDate}, customUnit: {self.customUnit}, threshold: {self.threshold}, unit: {self.unit}"

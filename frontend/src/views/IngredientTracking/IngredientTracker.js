@@ -154,7 +154,7 @@ const InventoryPage = () => {
               <tr>
                 {[
                   "name",
-                  "sku",
+                  "SKU",
                   "stock",
                   "price",
                   "orders",

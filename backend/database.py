@@ -109,11 +109,13 @@ async def update_ingredient_db(sku: str, ingredient: IngredientCreate):
             expiry_date=datetime.strptime(ingredient.expiry_date, "%Y-%m-%d"),  
             monthIncrease=prevIngredient["monthIncrease"],
             yearIncrease=prevIngredient["yearIncrease"], 
-            orders=prevIngredient["orders"],
+            orders=prevIngredient["orders"] + 1,
             stock_measurement=ingredient.customUnit if ingredient.customUnit else ingredient.unit,
             warningStockAmount=ingredient.threshold
         )
-        await ingredients_collection.replace_one({"_id":sku}, ingredientCreate.dict(by_alias=True))
+        data = ingredientCreate.dict(by_alias=True)
+        data["sku"] = ingredientCreate.sku
+        await ingredients_collection.replace_one({"_id":sku}, data)
     except Exception as e:
         raise e
     

@@ -31,7 +31,7 @@ export default function ResupplyIngredientTable({ ingredients, onSelect, selecte
                 <td className="px-4 py-2">
                   {ingredient.isNewIngredient ? 
                     <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">New</span> : 
-                    ingredient.name}
+                    <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">Existing</span>}
                 </td>
                 <td className="px-4 py-2">{ingredient.sku}</td>
                 <td className="px-4 py-2">{ingredient.stock} {ingredient.unit === "custom" ? ingredient.customUnit : ingredient.unit}</td>

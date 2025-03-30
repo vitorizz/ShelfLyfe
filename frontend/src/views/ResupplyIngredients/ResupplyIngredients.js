@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import ResupplyIngredientTable from "./ResupplyIngredientTable";
 import ResupplyIngredientForm from "./ResupplyIngredientForm";
+import { resupplyIngredients } from "../../api/resupply-ingredients";
 
 export default function ResupplyIngredients() {
   const [ingredients, setIngredients] = useState([]);
@@ -18,6 +19,7 @@ export default function ResupplyIngredients() {
   );
 
   const handleAddIngredient = (ingredient) => {
+    console.log("Adding ingredient:", ingredient);
     const newIngredient = {
       ...ingredient,
       id: Date.now().toString() 
@@ -26,6 +28,7 @@ export default function ResupplyIngredients() {
   };
 
   const handleUpdateIngredient = (updatedIngredient) => {
+    console.log("Updating ingredient:", updatedIngredient);
     setIngredients(
       ingredients.map((ingredient) =>
         ingredient.id === updatedIngredient.id
@@ -43,16 +46,24 @@ export default function ResupplyIngredients() {
     }
   };
 
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = async () => {
+    //console.log("Confirming order with ingredients:", ingredients);
     if (ingredients.length === 0) {
       alert("Please add at least one ingredient before confirming");
       return;
     }
     
-    alert("Order confirmed with " + ingredients.length + " ingredients!");
-    
-    setIngredients([]);
-    setSelectedIngredient(null);
+    try {
+      const result = await resupplyIngredients(ingredients);
+      //console.log("Resupply successful:", result);
+      //alert("Order confirmed with " + ingredients.length + " ingredients!");
+      
+      setIngredients([]);
+      setSelectedIngredient(null);
+    } catch (error) {
+      //console.error("Failed to confirm order:", error);
+      alert("Failed to confirm order: " + error.message);
+    }
   };
 
   return (

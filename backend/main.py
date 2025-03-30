@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from database import *
 from datetime import datetime
 from models import (
-    Ingredient, IngredientCreate
+    Ingredient, IngredientCreate, ResupplyIngredientCreate
 )
 from typing import List
 
@@ -137,6 +137,36 @@ async def get_all_expired_ingredients():
         return ingredients
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get all expired ingredients: {e}")
+    
+@app.post("/resupply-ingredient-add")
+async def resupply_ingredient_add(ingredient_list: List[ResupplyIngredientCreate]):
+    try:
+        for resupply in ingredient_list:
+            if resupply.isNewIngredient and not await get_ingredient_db(resupply.sku):
+                ingredientCreate = Ingredient(
+                    _id=resupply.sku,
+                    name=resupply.name,
+                    stock=resupply.stock,
+                    price=resupply.price,
+                    expiry_date=datetime.strptime(resupply.expiryDate, "%Y-%m-%d"),  
+                    monthIncrease="0%",
+                    yearIncrease="0%", 
+                    orders=1,
+                    stock_measurement=resupply.customUnit if resupply.customUnit else resupply.unit,
+                    warningStockAmount=resupply.threshold
+                )
+                await create_ingredient_db(ingredientCreate)
+            else:
+                ingredient = await get_ingredient_db(resupply.sku)
+                if not ingredient:
+                    raise HTTPException(status_code=400, detail="Ingredient not found")
+                
+                updated_stock = ingredient["stock"] + resupply.stock
+
+                await update_ingredient_db(resupply.sku, IngredientCreate(sku=ingredient["_id"], stock=updated_stock, price=resupply.price, expiry_date=resupply.expiryDate, customUnit=resupply.customUnit, unit=resupply.unit, threshold=ingredient["warningStockAmount"], name=ingredient["name"])) 
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to resupply ingredient: {e}")
 
 if __name__ == "__main__":
     import uvicorn

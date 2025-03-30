@@ -1,4 +1,3 @@
-// Dashboard.js
 import React, { useState } from "react";
 import {
   Chart as ChartJS,
@@ -31,25 +30,8 @@ ChartJS.register(
   Legend
 );
 
-export default function Dashboard() {
+export default function OrdersAndDishes() {
   const [activeTab, setActiveTab] = useState("orders");
-
-  // Bar Chart for projected orders over next 6 months
-  const barData = {
-    labels: ["Mar", "Apr", "May", "Jun", "Jul", "Aug"],
-    datasets: [
-      {
-        label: "Orders",
-        data: [400, 450, 500, 600, 650, 700],
-        backgroundColor: "#2563EB", // blue-600
-      },
-      {
-        label: "Meals",
-        data: [300, 350, 420, 480, 540, 600],
-        backgroundColor: "#FBBF24", // yellow-400
-      },
-    ],
-  };
 
   const barDataOrders = {
     labels: ["April", "May", "June", "July", "August", "September"],
@@ -191,39 +173,8 @@ export default function Dashboard() {
   return (
     <div className=" bg-white">
       {/* Main Content */}
-      <main className="max-w mx-auto p-6 space-y-10">
+      <main className="max-w mx-auto p-6 space-y-8">
         {/* Header with Subtitle */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Predictive Analytics Dashboard
-            </h1>
-            <p className="mt-1 text-sm text-gray-500">
-              Projected orders and dishes for the next 6 months
-            </p>
-          </div>
-          {/* <select className="border border-gray-300 rounded-md px-3 pr-8 py-2 text-sm text-gray-700">
-            <option>Monthly</option>
-            <option>Weekly</option>
-            <option>Daily</option>
-          </select> */}
-        </div>
-
-        {/* Tabs */}
-        <div className="flex space-x-8 border-b border-gray-200 mb-8">
-          <button className="pb-2 text-lg font-medium text-gray-900 border-b-2 border-blue-600">
-            Orders & Dishes
-          </button>
-          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-            Waste Reduction
-          </button>
-          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-            Earnings
-          </button>
-          <button className="pb-2 text-lg font-medium text-gray-500 hover:text-gray-700">
-            Ingredient Demand
-          </button>
-        </div>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

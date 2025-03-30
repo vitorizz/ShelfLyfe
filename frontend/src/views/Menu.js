@@ -52,15 +52,15 @@ const navigation = [
     current: false,
   },
   {
-    name: "Sales Insights",
-    href: "sales-insights",
-    icon: BanknotesIcon,
-    current: false,
-  },
-  {
     name: "Menu Manager",
     href: "menu-manager",
     icon: TableCellsIcon,
+    current: false,
+  },
+  {
+    name: "Sales Insights",
+    href: "sales-insights",
+    icon: BanknotesIcon,
     current: false,
   },
   {

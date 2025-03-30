@@ -149,7 +149,7 @@ export default function SupplierMenu({ children }) {
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-4 pb-4">
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-auto w-auto mt-5"
@@ -170,7 +170,7 @@ export default function SupplierMenu({ children }) {
                                     item.current
                                       ? "bg-gray-50 text-blue-600"
                                       : "text-gray-700 hover:text-blue-600 hover:bg-gray-50",
-                                    "group flex gap-x-4 rounded-md p-3 text-lg leading-7 font-semibold"
+                                    "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
                                   )}
                                 >
                                   <item.icon
@@ -192,14 +192,14 @@ export default function SupplierMenu({ children }) {
                           <Link
                             onClick={() => onPathChange("settings")}
                             to={"settings"}
-                            className={`group -mx-2 flex gap-x-4 rounded-md p-3 text-sm font-semibold leading-7 ${
+                            className={`group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-medium ${
                               currentPath === "settings"
                                 ? "bg-gray-50 text-blue-600"
                                 : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
                             }`}
                           >
                             <Cog6ToothIcon
-                              className={`h-6 w-6 shrink-0 ${
+                              className={`h-8 w-8 shrink-0 ${
                                 currentPath === "settings"
                                   ? "text-blue-600"
                                   : "text-gray-400 group-hover:text-blue-600"
@@ -219,9 +219,9 @@ export default function SupplierMenu({ children }) {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-56 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-4 pb-4">
             <div className="flex h-16 shrink-0 items-center">
               <img
                 className="h-auto w-auto mt-5"
@@ -242,7 +242,7 @@ export default function SupplierMenu({ children }) {
                             item.current
                               ? "bg-gray-50 text-blue-600"
                               : "text-gray-700 hover:text-blue-600 hover:bg-gray-50",
-                            "group flex gap-x-4 rounded-md p-3 text-lg leading-7 font-semibold"
+                            "group flex gap-x-3 rounded-md p-2 text-sm font-medium"
                           )}
                         >
                           <item.icon
@@ -264,7 +264,7 @@ export default function SupplierMenu({ children }) {
                   <Link
                     onClick={() => onPathChange("settings")}
                     to={"/settings"}
-                    className={`group -mx-2 flex gap-x-4 rounded-md p-3 text-sm font-semibold leading-7 ${
+                    className={`group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-medium ${
                       currentPath === "/settings"
                         ? "bg-gray-50 text-blue-600"
                         : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
@@ -286,7 +286,7 @@ export default function SupplierMenu({ children }) {
           </div>
         </div>
 
-        <div className="lg:pl-72">
+        <div className="lg:pl-56">
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
@@ -352,7 +352,7 @@ export default function SupplierMenu({ children }) {
                         Tom Cook
                       </span>
                       <ChevronDownIcon
-                        className="ml-2 h-5 w-5 text-gray-400"
+                        className="ml-2 h-8 w-8 text-gray-400"
                         aria-hidden="true"
                       />
                     </span>
@@ -374,7 +374,7 @@ export default function SupplierMenu({ children }) {
                               to={item.href}
                               className={classNames(
                                 active ? "bg-gray-50" : "",
-                                "block px-4 py-1 text-sm leading-7 text-gray-900"
+                                "block px-4 py-1 text-sm leading-6 text-gray-900"
                               )}
                             >
                               {item.name}

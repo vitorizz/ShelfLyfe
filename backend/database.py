@@ -2,7 +2,7 @@ import motor.motor_asyncio
 from pymongo import WriteConcern
 from dotenv import load_dotenv, find_dotenv
 import os
-import datetime
+from datetime import datetime, timedelta
 import json
 from collections import defaultdict
 from models import Ingredient, MenuItem, IngredientCreate
@@ -167,6 +167,30 @@ async def get_all_expired_ingredients_db():
     try:
         ingredients = []
         async for ingredient in ingredients_collection.find({"expiry_date": {"$lt": datetime.datetime.now()}}):
+            ingredients.append(ingredient)
+        return ingredients
+    except Exception as e:
+        raise e
+
+async def get_expiring_ingredients_db():
+    try:
+        ingredients = []
+        now = datetime.now()
+        soon = now + timedelta(days=3)  # Adjust the number of days as needed
+        async for ingredient in ingredients_collection.find({
+            "expiry_date": {"$gte": now, "$lte": soon}
+        }):
+            ingredients.append(ingredient)
+        return ingredients
+    except Exception as e:
+        raise e
+
+async def get_low_stock_ingredients_db():
+    try:
+        ingredients = []
+        async for ingredient in ingredients_collection.find({
+            "$expr": {"$lt": ["$stock", "$warningStockAmount"]}
+        }):
             ingredients.append(ingredient)
         return ingredients
     except Exception as e:

@@ -137,7 +137,23 @@ async def get_all_expired_ingredients():
         return ingredients
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get all expired ingredients: {e}")
-    
+
+@app.get("/get-expiring-ingredients")
+async def get_expiring_ingredients():
+    try:
+        ingredients = await get_expiring_ingredients_db()
+        return ingredients
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to get expiring ingredients: {e}")
+
+@app.get("/get-low-stock-ingredients")
+async def get_low_stock_ingredients():
+    try:
+        ingredients = await get_low_stock_ingredients_db()
+        return ingredients
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to get low stock ingredients: {e}")
+
 @app.post("/resupply-ingredient-add")
 async def resupply_ingredient_add(ingredient_list: List[ResupplyIngredientCreate]):
     try:

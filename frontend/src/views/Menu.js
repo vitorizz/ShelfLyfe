@@ -11,6 +11,8 @@ import {
   CalendarIcon,
   ChartBarIcon,
   ChartPieIcon,
+  ClipboardDocumentListIcon,
+  ClipboardDocumentCheckIcon,
   Cog6ToothIcon,
   DocumentDuplicateIcon,
   FolderIcon,
@@ -25,7 +27,6 @@ import {
   UsersIcon,
   WrenchIcon,
   XMarkIcon,
-  ClipboardDocumentListIcon
 } from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon,
@@ -39,6 +40,12 @@ const navigation = [
     href: "",
     icon: HomeIcon,
     current: true,
+  },
+  {
+    name: "Enter Orders",
+    href: "enter-orders",
+    icon: ClipboardDocumentCheckIcon,
+    current: false,
   },
   {
     name: "Ingredient Tracker",

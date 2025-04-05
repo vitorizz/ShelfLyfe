@@ -9,6 +9,7 @@ import MenuManager from "./views/MenuManager/MenuManager";
 import PredictiveAnalytics from "./views/PredictiveAnalytics/PredictiveAnalytics";
 import IngredientManagement from "./views/ManageIngredients/IngredientManagement";
 import ResupplyIngredients from "./views/ResupplyIngredients/ResupplyIngredients";
+import EnterOrders from "./views/EnterOrders/EnterOrders";
 
 function App() {
   return (
@@ -17,14 +18,12 @@ function App() {
         <Routes>
           <Route element={<Menu />}>
             <Route index element={<Dashboard />} />
+            <Route path="enter-orders" element={<EnterOrders />} />
             <Route path="ingredient-tracker" element={<IngredientTracker />} />
             <Route path="sales-insights" element={<SalesDashboard />} />
             <Route path="menu-manager" element={<MenuManager />} />
             <Route path="settings" element={<Settings />} />
-            <Route
-              path="predictive-analytics"
-              element={<PredictiveAnalytics />}
-            />
+            <Route path="predictive-analytics" element={<PredictiveAnalytics />} />
             <Route path="manage-ingredients" element={<IngredientManagement />} />
             <Route path="resupply-ingredients" element={<ResupplyIngredients />} />
           </Route>

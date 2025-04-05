@@ -1,5 +1,5 @@
 import {
-  ArrowDownRightIcon,
+  ArrowRightIcon,
   ArrowUpRightIcon,
   CalendarIcon,
   ChartBarIcon,
@@ -12,8 +12,6 @@ import {
   BeakerIcon,
 } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
-
-// 1. Import Chart.js components and the Line component
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +24,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-// 2. Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -43,7 +40,6 @@ export default function DashboardPage() {
   const [lowStockAlerts, setLowStockAlerts] = useState([]);
 
   useEffect(() => {
-    // Fetch ingredients expiring soon from the backend
     fetch("http://localhost:8000/get-expiring-ingredients")
       .then((res) => res.json())
       .then((data) => setExpiryAlerts(data))
@@ -51,14 +47,12 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    // Fetch ingredients with low stock from the backend
     fetch("http://localhost:8000/get-low-stock-ingredients")
       .then((res) => res.json())
       .then((data) => setLowStockAlerts(data))
       .catch((err) => console.error(err));
   }, []);
 
-  // Utility function to compute a human-readable expiry label.
   const getExpiryLabel = (expiryDateStr) => {
     const expiryDate = new Date(expiryDateStr);
     const now = new Date();
@@ -70,27 +64,25 @@ export default function DashboardPage() {
     return `${diffDays} days`;
   };
 
-  // Utility function to compute the percentage of stock remaining.
   const computeStockPercentage = (stock, warningStockAmount) => {
     const percentage = (stock / warningStockAmount) * 100;
     return Math.round(percentage);
   };
 
-  // 3. waste reduction chat data (dummy data)
   const lineData = {
     labels: ["March", "April", "May", "June", "July", "August"],
     datasets: [
       {
         label: "Waste Production (%)",
-        data: [30, 28, 32, 27, 29, 26], // hard coded historical data
-        borderColor: "#60a5fa",   // light blue
-        backgroundColor: "#1d4ed8", //dark blue
+        data: [30, 28, 32, 27, 29, 26],
+        borderColor: "#60a5fa",
+        backgroundColor: "#1d4ed8",
         fill: false,
         tension: 0.3,
       },
     ],
   };
-  
+
   const lineOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -104,20 +96,7 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-white px-4 md:px-6">
-        <div className="ml-auto flex items-center gap-4">
-          <form className="relative">
-            <MagnifyingGlassIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-            <input
-              type="search"
-              placeholder="Search inventory..."
-              className="w-72 rounded-lg border border-gray-200 bg-white pl-8 py-2 md:w-80 lg:w-96 focus:outline-none focus:ring-2 focus:ring-gray-200"
-            />
-          </form>
-          <button className="rounded-full p-2 border border-gray-200 hover:bg-gray-100">
-            <span className="sr-only">Toggle notifications</span>
-            <ExclamationTriangleIcon className="h-4 w-4" />
-          </button>
-        </div>
+        <h1 className="text-6xl font-semibold">Dashboard</h1>
       </header>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -145,11 +124,7 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
-            <div className="border-t border-gray-200 p-4">
-              <button className="w-full rounded-md border border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-50">
-                View All Expiring Items
-              </button>
-            </div>
+            {/* "View All Expiring Items" button removed */}
           </div>
 
           {/* Low Stock Alerts Card */}
@@ -169,29 +144,29 @@ export default function DashboardPage() {
                         {computeStockPercentage(item.stock, item.warningStockAmount)}% left
                       </span>
                     </div>
-                    <button className="text-sm text-gray-600 hover:text-gray-900 hover:underline">
+                    <button 
+                      onClick={() => window.location.href = '/resupply-ingredients'}
+                      className="text-sm text-gray-600 hover:text-gray-900 hover:underline">
                       Order
                     </button>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="border-t border-gray-200 p-4">
-              <button className="w-full rounded-md border border-gray-200 px-4 py-2 text-sm font-medium hover:bg-gray-50">
-                View All Low Stock Items
-              </button>
-            </div>
+            {/* "View All Low Stock Items" button removed */}
           </div>
         </div>
 
-        {/* Enter Orders Button */}
         <div className="mt-8 flex justify-center">
-            <button className="w-full md:w-auto bg-blue-700 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg">
-              Enter Today's Orders
-            </button>
-          </div>
-
-        {/* Waste Production History Line Chart Section */}
+        <button 
+          onClick={() => window.location.href = '/enter-orders'} 
+          className="group relative w-72 h-32 bg-blue-700 text-white text-2xl font-bold py-4 px-8 rounded-lg flex items-center justify-center overflow-hidden">
+          <span className="transition-transform duration-300 group-hover:-translate-x-8">
+            Enter Today's Orders
+          </span>
+          <ArrowRightIcon className="absolute right-4 h-6 w-6 opacity-0 transition-all duration-300 group-hover:opacity-100" />
+        </button>
+        </div>
         <div className="mt-8 rounded-lg border border-gray-200 bg-white shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             Waste Production History

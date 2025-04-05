@@ -141,7 +141,13 @@ async def get_all_expired_ingredients():
 @app.get("/get-expiring-ingredients")
 async def get_expiring_ingredients():
     try:
-        ingredients = await get_expiring_ingredients_db()
+        now = datetime.now()
+        three_months_later = now + timedelta(days=90) #set to 90 to view use for testing
+        ingredients = []
+        async for ingredient in ingredients_collection.find({
+            "expiry_date": {"$gt": now, "$lte": three_months_later}
+        }):
+            ingredients.append(ingredient)
         return ingredients
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get expiring ingredients: {e}")

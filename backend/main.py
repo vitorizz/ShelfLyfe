@@ -3,10 +3,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from database import *
-from datetime import datetime
-from models import (
-    Ingredient, IngredientCreate, ResupplyIngredientCreate
-)
+from datetime import datetime, timedelta
+from models import Ingredient, IngredientCreate, ResupplyIngredientCreate, MenuItem
 from typing import List
 
 def convert_object_ids(data):
@@ -33,7 +31,6 @@ app.add_middleware(
 async def startup():
     await startup_db_client()
 
-
 @app.on_event("shutdown")
 async def shutdown():
     await shutdown_db_client()
@@ -43,24 +40,23 @@ async def add_ingredient(ingredient: IngredientCreate):
     try:
         if await get_ingredient_db(ingredient.sku):
             raise HTTPException(status_code=400, detail="Ingredient already exists")
-        
+
         ingredientCreate = Ingredient(
             _id=ingredient.sku,
             name=ingredient.name,
             stock=ingredient.stock,
             price=ingredient.price,
-            expiry_date=datetime.strptime(ingredient.expiry_date, "%Y-%m-%d"),  
+            expiry_date=datetime.strptime(ingredient.expiry_date, "%Y-%m-%d"),
             monthIncrease="0%",
-            yearIncrease="0%", 
+            yearIncrease="0%",
             orders=1,
             stock_measurement=ingredient.customUnit if ingredient.customUnit else ingredient.unit,
             warningStockAmount=ingredient.threshold
         )
         await create_ingredient_db(ingredientCreate)
-
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to create ingredient: {e}")
-    
+
 @app.get("/get-ingredient")
 async def get_ingredient(sku: str):
     try:
@@ -90,7 +86,7 @@ async def update_ingredient(ingredient: IngredientCreate):
         await update_ingredient_db(ingredient.sku, ingredient)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to update ingredient: {e}")
-    
+
 @app.post("/add-menu-item")
 async def add_menu_item(name: str, ingredients: List[Ingredient], price: float, category: str, description: str, season: str):
     try:
@@ -106,15 +102,15 @@ async def get_menu_item(id: str):
         return menu_item
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get menu item: {e}")
-    
-@ app.get("/get-all-menu-items")
+
+@app.get("/get-all-menu-items")
 async def get_all_menu_items():
     try:
         menu_items = await menu_items_collection.find().to_list(1000)
         return convert_object_ids(menu_items)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to get menu items: {e}")
-    
+
 @app.delete("/delete-menu-item")
 async def delete_menu_item(id: str):
     try:
@@ -142,7 +138,7 @@ async def get_all_expired_ingredients():
 async def get_expiring_ingredients():
     try:
         now = datetime.now()
-        three_months_later = now + timedelta(days=90) #set to 90 to view use for testing
+        three_months_later = now + timedelta(days=90)  # set to 90 for testing
         ingredients = []
         async for ingredient in ingredients_collection.find({
             "expiry_date": {"$gt": now, "$lte": three_months_later}
@@ -170,9 +166,9 @@ async def resupply_ingredient_add(ingredient_list: List[ResupplyIngredientCreate
                     name=resupply.name,
                     stock=resupply.stock,
                     price=resupply.price,
-                    expiry_date=datetime.strptime(resupply.expiryDate, "%Y-%m-%d"),  
+                    expiry_date=datetime.strptime(resupply.expiryDate, "%Y-%m-%d"),
                     monthIncrease="0%",
-                    yearIncrease="0%", 
+                    yearIncrease="0%",
                     orders=1,
                     stock_measurement=resupply.customUnit if resupply.customUnit else resupply.unit,
                     warningStockAmount=resupply.threshold
@@ -182,13 +178,72 @@ async def resupply_ingredient_add(ingredient_list: List[ResupplyIngredientCreate
                 ingredient = await get_ingredient_db(resupply.sku)
                 if not ingredient:
                     raise HTTPException(status_code=400, detail="Ingredient not found")
-                
                 updated_stock = ingredient["stock"] + resupply.stock
-
-                await update_ingredient_db(resupply.sku, IngredientCreate(sku=ingredient["_id"], stock=updated_stock, price=resupply.price, expiry_date=resupply.expiryDate, customUnit=resupply.customUnit, unit=resupply.unit, threshold=ingredient["warningStockAmount"], name=ingredient["name"])) 
-
+                await update_ingredient_db(
+                    resupply.sku,
+                    IngredientCreate(
+                        sku=ingredient["_id"],
+                        name=ingredient["name"],
+                        stock=updated_stock,
+                        price=resupply.price,
+                        expiry_date=resupply.expiryDate,
+                        customUnit=resupply.customUnit,
+                        unit=resupply.unit,
+                        threshold=ingredient["warningStockAmount"]
+                    )
+                )
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Failed to resupply ingredient: {e}")
+
+# New endpoint for submitting orders and updating inventory
+@app.post("/submit-orders")
+async def submit_orders(order_counts: dict):
+    """
+    Expects a payload with the following structure:
+    {
+       "recipe_id_1": { "name": "Bruschetta", "count": 4 },
+       "recipe_id_2": { "name": "Pasta", "count": 2 },
+       ...
+    }
+    For each ordered recipe, this endpoint retrieves the recipe details from the menu_items_collection,
+    multiplies each ingredient's "amount" (units needed per order) by the order count, then subtracts that
+    total from the corresponding ingredient's stock in the inventory.
+    """
+    try:
+        total_usage = {}
+        # For each ordered recipe, calculate total ingredient usage
+        for recipe_id, order in order_counts.items():
+            count = order.get("count", 0)
+            if count <= 0:
+                continue
+            # Retrieve the recipe details from the menu_items_collection
+            recipe = await get_menu_item_db(recipe_id)
+            if not recipe:
+                continue
+            # Assume recipe["ingredients"] is a list of dicts with at least "name" and "amount" keys
+            for ingredient in recipe.get("ingredients", []):
+                ing_name = ingredient.get("name")
+                usage_per_order = ingredient.get("amount", 0)
+                total = usage_per_order * count
+                if ing_name in total_usage:
+                    total_usage[ing_name] += total
+                else:
+                    total_usage[ing_name] = total
+
+        # Update each ingredient's inventory stock
+        for ing_name, used_amount in total_usage.items():
+            inventory_ing = await ingredients_collection.find_one({"name": ing_name})
+            if inventory_ing:
+                new_stock = inventory_ing["stock"] - used_amount
+                if new_stock < 0:
+                    new_stock = 0
+                await ingredients_collection.update_one(
+                    {"_id": inventory_ing["_id"]},
+                    {"$set": {"stock": new_stock}}
+                )
+        return {"status": "success", "updated": total_usage}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Failed to submit orders: {e}")
 
 if __name__ == "__main__":
     import uvicorn

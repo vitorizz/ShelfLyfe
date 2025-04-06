@@ -106,7 +106,7 @@ export default function DashboardPage() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 md:px-6">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <h1 className="text-4xl font-semibold">Dashboard</h1>
         <button 
           onClick={() => window.location.href = '/enter-orders'}
           className="flex items-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -120,8 +120,8 @@ export default function DashboardPage() {
           {/* Expiry Alerts Card */}
           <div className="col-span-2 rounded-lg border border-gray-200 bg-white shadow-sm border-l-4 border-l-red-500">
             <div className="p-4 pb-2">
-              <h1 className="text-base font-semibold">Expiry Alerts</h1>
-              <p className="text-sm text-gray-500">Items expiring soon</p>
+              <h1 className="text-2xl font-semibold">Expiry Alerts</h1>
+              <p className="text-base text-gray-500">Items expiring soon</p>
             </div>
             <div className="p-4 pt-0">
               <div className="text-2xl font-bold">{expiryAlerts.length} items</div>
@@ -129,12 +129,15 @@ export default function DashboardPage() {
                 {expiryAlerts.map((item) => (
                   <div key={item._id} className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
-                      <span>{item.name}</span>
-                      <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
+                      <span className="text-lg">{item.name}</span>
+                      <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-base font-medium text-red-800">
                         {getExpiryLabel(item.expiry_date)}
                       </span>
                     </div>
-                    <button className="text-sm text-gray-600 hover:text-gray-900 hover:underline">
+                    <button 
+                      onClick={() => window.location.href = '/resupply-ingredients'}
+                      className="text-base text-white bg-blue-700 w-14 h-7 rounded-lg border hover:bg-blue-800"
+                    >
                       View
                     </button>
                   </div>
@@ -146,8 +149,8 @@ export default function DashboardPage() {
           {/* Low Stock Alerts Card */}
           <div className="col-span-2 rounded-lg border border-gray-200 bg-white shadow-sm border-l-4 border-l-amber-500">
             <div className="p-4 pb-2">
-              <h3 className="text-base font-semibold">Low Stock Alerts</h3>
-              <p className="text-sm text-gray-500">Items below minimum threshold</p>
+              <h3 className="text-2xl font-semibold">Low Stock Alerts</h3>
+              <p className="text-base text-gray-500">Items below minimum threshold</p>
             </div>
             <div className="p-4 pt-0">
               <div className="text-2xl font-bold">{lowStockAlerts.length} items</div>
@@ -155,14 +158,14 @@ export default function DashboardPage() {
                 {lowStockAlerts.map((item) => (
                   <div key={item._id} className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
-                      <span>{item.name}</span>
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">
+                      <span className="text-lg">{item.name}</span>
+                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-base font-medium text-gray-800">
                         {computeStockPercentage(item.stock, item.warningStockAmount)}% left
                       </span>
                     </div>
                     <button 
                       onClick={() => window.location.href = '/resupply-ingredients'}
-                      className="text-sm text-gray-600 hover:text-gray-900 hover:underline">
+                      className="text-base text-white bg-blue-700 w-16 h-8 rounded-lg border hover:bg-blue-800">
                       Order
                     </button>
                   </div>
@@ -221,7 +224,7 @@ export default function DashboardPage() {
                   onClick={() => window.location.href = '/ingredient-tracker'}
                   className="group relative bg-blue-700 text-white hover:bg-blue-800 px-4 py-2 rounded-md overflow-hidden"
                 >
-                  <span className="transition-transform duration-300 inline-block">
+                  <span className="transition-transform duration-300 inline-block font-semibold">
                     View Inventory
                   </span>
                 </button>
@@ -238,7 +241,7 @@ export default function DashboardPage() {
                   onClick={() => window.location.href = '/resupply-ingredients'}
                   className="group relative bg-blue-700 text-white px-4 py-2 hover:bg-blue-800 rounded-md overflow-hidden"
                 >
-                  <span className="transition-transform duration-300 inline-block">
+                  <span className="transition-transform duration-300 inline-block font-semibold">
                     Go to Resupply
                   </span>
                 </button>
@@ -255,7 +258,7 @@ export default function DashboardPage() {
                   onClick={() => window.location.href = '/sales-insights'}
                   className="group relative bg-blue-700 text-white px-4 py-2 hover:bg-blue-800 rounded-md overflow-hidden"
                 >
-                  <span className="transition-transform duration-300 inline-block">
+                  <span className="transition-transform duration-300 inline-block font-semibold">
                     View Sales Insights
                   </span>
                 </button>

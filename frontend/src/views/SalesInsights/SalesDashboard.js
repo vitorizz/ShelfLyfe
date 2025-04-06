@@ -1,22 +1,19 @@
 import React, { useState } from "react";
-import OrderBar from "./OrdersTab/OrderBar";
 import SalesInfo from "./SalesTab/SalesInfo";
 import Tabs from "../../components/Tabs";
 
 const tabs = [
-  { name: "Order Insights", current: true }, // Default tab
-  { name: "Earnings Analysis", current: false },
+  { name: "Earnings Analysis", current: true },
 ];
 
 const tabComponents = {
-  "Order Insights": <OrderBar />,
   "Earnings Analysis": <SalesInfo />,
 };
 
 export default function SalesDashboard() {
-  const [currentTab, setCurrentTab] = useState("Order Insights");
+  const [currentTab, setCurrentTab] = useState("Earnings Analysis");
 
-  // Update the tabs array's current property based on the currentTab state
+  // Update the tabs array's current property based on the currentTab state (For when we want to add more tabs)
   const updatedTabs = tabs.map((tab) => ({
     ...tab,
     current: tab.name === currentTab,

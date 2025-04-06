@@ -24,7 +24,6 @@ export default function SalesInfo() {
       Offered Products Carousel:
       Display a carousel of featured menu items.
       */}
-      <div className="pt-10">**Add Carousel of Featured Menu Items**</div>
     </div>
   );
 }

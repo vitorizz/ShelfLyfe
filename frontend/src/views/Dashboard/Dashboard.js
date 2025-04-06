@@ -11,6 +11,7 @@ import {
   ArchiveBoxIcon,
   ShoppingCartIcon,
   BeakerIcon,
+  PlusIcon,
 } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import {
@@ -104,8 +105,15 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-white px-4 md:px-6">
-        <h1 className="text-6xl font-semibold">Dashboard</h1>
+      <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-white px-4 md:px-6">
+        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <button 
+          onClick={() => window.location.href = '/enter-orders'}
+          className="flex items-center gap-2 rounded-md bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          <PlusIcon className="h-5 w-5" />
+          Enter Today's Orders
+        </button>
       </header>
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -133,7 +141,6 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
-            {/* "View All Expiring Items" button removed */}
           </div>
 
           {/* Low Stock Alerts Card */}
@@ -162,66 +169,101 @@ export default function DashboardPage() {
                 ))}
               </div>
             </div>
-            {/* "View All Low Stock Items" button removed */}
           </div>
         </div>
 
-        <div className="mt-8 flex justify-center">
-        <button 
-          onClick={() => window.location.href = '/enter-orders'} 
-          className="group relative w-72 h-32 bg-blue-700 text-white text-2xl font-bold py-4 px-8 rounded-lg flex items-center justify-center overflow-hidden">
-          <span className="transition-transform duration-300 group-hover:-translate-x-8">
-            Enter Today's Orders
-          </span>
-          <ArrowRightIcon className="absolute right-4 h-6 w-6 opacity-0 transition-all duration-300 group-hover:opacity-100" />
-        </button>
+        {/* Inventory Update Prompt */}
+        <div className="w-full bg-blue-700 rounded-lg p-4 mb-4 flex justify-between items-center">
+          <h2 className="text-xl font-semibold text-white">Ready to update your inventory?</h2>
+          <button 
+            onClick={() => window.location.href = '/enter-orders'} 
+            className="group relative w-50 h-16 bg-white text-blue-700 text-xl font-bold py-4 px-8 rounded-lg flex items-center justify-center overflow-hidden">
+            <span className="transition-transform duration-300 group-hover:-translate-x-4">
+              Enter Today's Orders
+            </span>
+            <ArrowRightIcon className="absolute right-4 h-5 w-5 opacity-0 transition-all duration-300 group-hover:opacity-100" />
+          </button>
         </div>
-        <div className="flex flex-col lg:flex-row gap-4 w-full">
-  {/* Left Column: Projected Top Dishes Card */}
-  <div className="lg:w-1/2">
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
-      <h3 className="text-lg font-semibold mb-2">Projected Top Dishes</h3>
-      <p className="text-sm text-gray-500 mb-4">Most popular dishes by order volume</p>
-      <ul className="divide-y divide-gray-100">
-        {topMeals.map((meal, idx) => (
-          <li key={idx} className="py-3 flex justify-between items-center">
-            <div className="flex flex-col">
-              <span className="font-medium text-gray-800">{meal.name}</span>
-              <span className="text-sm text-gray-500">{meal.orders} orders</span>
-            </div>
-            {meal.direction === "up" ? (
-              <ArrowUpIcon className="h-5 w-5 text-green-500" />
-            ) : (
-              <ArrowDownIcon className="h-5 w-5 text-red-500" />
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
 
-  {/* Right Column: Stacked KPI Cards */}
-  <div className="lg:w-1/2 flex flex-col gap-4">
-    {/* Top Ingredient in Demand */}
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
-      <h3 className="text-lg font-semibold mb-2">Top Ingredient in Demand</h3>
-      <p className="mt-2 text-2xl font-bold">Tomatoes</p>
-      <p className="mt-1 text-sm text-green-600">+10% from last month</p>
-    </div>
-    {/* Ingredients at Risk of Shortage */}
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
-      <h3 className="text-lg font-semibold mb-2">Ingredients at Risk of Shortage</h3>
-      <p className="mt-2 text-2xl font-bold">4</p>
-      <p className="mt-1 text-sm text-red-600">+1 more than last week</p>
-    </div>
-    {/* Potential Savings */}
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
-      <h3 className="text-lg font-semibold mb-2">Potential Savings</h3>
-      <p className="mt-2 text-2xl font-bold">$350</p>
-      <p className="mt-1 text-sm text-green-600">With optimized ordering</p>
-    </div>
-  </div>
-</div>
+        <div className="flex flex-col lg:flex-row gap-4 w-full">
+          {/* Left Column: Projected Top Dishes Card */}
+          <div className="lg:w-1/2">
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
+              <h3 className="text-lg font-semibold mb-2">Projected Top Dishes</h3>
+              <p className="text-sm text-gray-500 mb-4">Most popular dishes by order volume</p>
+              <ul className="divide-y divide-gray-100">
+                {topMeals.map((meal, idx) => (
+                  <li key={idx} className="py-3 flex justify-between items-center">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-800">{meal.name}</span>
+                      <span className="text-sm text-gray-500">{meal.orders} orders</span>
+                    </div>
+                    {meal.direction === "up" ? (
+                      <ArrowUpIcon className="h-5 w-5 text-green-500" />
+                    ) : (
+                      <ArrowDownIcon className="h-5 w-5 text-red-500" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Right Column: Stacked KPI Cards */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            {/* Top Ingredient in Demand */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow relative">
+              <h3 className="text-lg font-semibold mb-2">Top Ingredient in Demand</h3>
+              <p className="mt-2 text-2xl font-bold">Tomatoes</p>
+              <p className="mt-1 text-sm text-green-600">+10% from last month</p>
+              <div className="absolute bottom-4 right-4">
+                <button 
+                  onClick={() => window.location.href = '/ingredient-tracker'}
+                  className="group relative bg-blue-700 text-white hover:bg-blue-800 px-4 py-2 rounded-md overflow-hidden"
+                >
+                  <span className="transition-transform duration-300 inline-block">
+                    View Inventory
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+            {/* Ingredients at Risk of Shortage */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow relative">
+              <h3 className="text-lg font-semibold mb-2">Ingredients at Risk of Shortage</h3>
+              <p className="mt-2 text-2xl font-bold">4</p>
+              <p className="mt-1 text-sm text-red-600">+1 more than last week</p>
+              <div className="absolute bottom-4 right-4">
+                <button 
+                  onClick={() => window.location.href = '/resupply-ingredients'}
+                  className="group relative bg-blue-700 text-white px-4 py-2 hover:bg-blue-800 rounded-md overflow-hidden"
+                >
+                  <span className="transition-transform duration-300 inline-block">
+                    Go to Resupply
+                  </span>
+                </button>
+              </div>
+            </div>
+            
+            {/* Potential Savings */}
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow relative">
+              <h3 className="text-lg font-semibold mb-2">Potential Savings</h3>
+              <p className="mt-2 text-2xl font-bold">$350</p>
+              <p className="mt-1 text-sm text-green-600">With optimized ordering</p>
+              <div className="absolute bottom-4 right-4">
+                <button 
+                  onClick={() => window.location.href = '/sales-insights'}
+                  className="group relative bg-blue-700 text-white px-4 py-2 hover:bg-blue-800 rounded-md overflow-hidden"
+                >
+                  <span className="transition-transform duration-300 inline-block">
+                    View Sales Insights
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-8 rounded-lg border border-gray-200 bg-white shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
             Waste Production History

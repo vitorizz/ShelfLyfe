@@ -1,4 +1,4 @@
-# Shelflife
+# ShelfLyfe
 
 ## Installation and running the backend
 

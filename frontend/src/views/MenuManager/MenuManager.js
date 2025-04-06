@@ -12,6 +12,8 @@ export default function MenuManager() {
   const [newIngredientAmount, setNewIngredientAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [newRecipeName, setNewRecipeName] = useState("");
+  const [newRecipeDescription, setNewRecipeDescription] = useState("");
 
   // Group an array of recipes by their category
   const groupByCategory = (recipesArray) => {
@@ -118,6 +120,27 @@ export default function MenuManager() {
     setNewIngredientAmount("");
   };
 
+  // Handler for adding a new recipe
+  const handleAddRecipe = () => {
+    if (!newRecipeName.trim()) return;
+
+    const newRecipe = {
+      id: Date.now(),
+      name: newRecipeName,
+      description: newRecipeDescription,
+      ingredients: [],
+      category: selectedCategory,
+    };
+
+    setRecipes((prev) => ({
+      ...prev,
+      [selectedCategory]: [...(prev[selectedCategory] || []), newRecipe],
+    }));
+    setNewRecipeName("");
+    setNewRecipeDescription("");
+    setSelectedRecipe(newRecipe);
+  };
+
   if (isLoading) {
     return <div className="text-center p-8">Loading menu items...</div>;
   }
@@ -174,6 +197,34 @@ export default function MenuManager() {
           Desserts
         </button>
       </div>
+
+      {selectedCategory && (
+        <div className="mb-4">
+          <h2 className="text-xl font-bold mb-2">
+            Add a new {selectedCategory} Recipe
+          </h2>
+          <input
+            type="text"
+            value={newRecipeName}
+            onChange={(e) => setNewRecipeName(e.target.value)}
+            placeholder="Name"
+            className="border p-2 rounded mr-2"
+          />
+          <input
+            type="text"
+            value={newRecipeDescription}
+            onChange={(e) => setNewRecipeDescription(e.target.value)}
+            placeholder="Description"
+            className="border p-2 rounded mr-2"
+          />
+          <button
+            onClick={handleAddRecipe}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
+          >
+            Add
+          </button>
+        </div>
+      )}
 
       {/* Recipe list and detail view */}
       {selectedCategory && recipes[selectedCategory] && (

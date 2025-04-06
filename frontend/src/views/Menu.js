@@ -1,7 +1,7 @@
 import React from "react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import ShelfLyfeLogo from "../assets/images/ShelfLyfeLogo.png";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   AdjustmentsHorizontalIcon,
@@ -96,11 +96,18 @@ function classNames(...classes) {
 
 export default function SupplierMenu({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const location = useLocation();
+  const [currentPath, setCurrentPath] = useState("");
+  
+  useEffect(() => {
+    // Extract the path without leading slash
+    const path = location.pathname.replace(/^\//, "");
+    setCurrentPath(path);
+  }, [location]);
 
-  const updatedNavigation = navigation.map((path) => ({
-    ...path,
-    current: path.href === currentPath,
+  const updatedNavigation = navigation.map((item) => ({
+    ...item,
+    current: item.href === currentPath || (currentPath === "" && item.href === "")
   }));
 
   const onPathChange = (path) => {
@@ -277,16 +284,16 @@ export default function SupplierMenu({ children }) {
                 <li className="mt-auto">
                   <Link
                     onClick={() => onPathChange("settings")}
-                    to={"/settings"}
+                    to={"settings"}
                     className={`group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-medium ${
-                      currentPath === "/settings"
+                      currentPath === "settings"
                         ? "bg-gray-50 text-blue-600"
                         : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
                     }`}
                   >
                     <Cog6ToothIcon
                       className={`h-8 w-8 shrink-0 ${
-                        currentPath === "/settings"
+                        currentPath === "settings"
                           ? "text-blue-600"
                           : "text-gray-400 group-hover:text-blue-600"
                       }`}

@@ -3,6 +3,12 @@ from typing import Optional, List, Set, ClassVar
 from bson import ObjectId
 from datetime import datetime
 
+
+"""
+Model classes for the menu items and ingredients.
+These classes are used to define the structure of the data that will be stored in the database.
+"""
+
 class Ingredient(BaseModel):
     sku: str = Field(..., alias="_id")
     name: str
@@ -22,6 +28,7 @@ class Ingredient(BaseModel):
     def __str__(self):
         return f"sku: {self.sku}, name: {self.name}, stock: {self.stock}, price: {self.price}, expiry_date: {self.expiry_date}, monthIncrease: {self.monthIncrease}, yearIncrease: {self.yearIncrease}, orders: {self.orders}, stock_measurement: {self.stock_measurement}, warningStockAmount: {self.warningStockAmount}"
 
+
 class MenuItem(BaseModel):
     id: Optional[ObjectId] = Field(default_factory=ObjectId, alias="_id")
     name: str
@@ -35,6 +42,7 @@ class MenuItem(BaseModel):
     class Config:
         populate_by_name = True
         arbitrary_types_allowed = True
+
 
 class IngredientCreate(BaseModel):
     sku: str

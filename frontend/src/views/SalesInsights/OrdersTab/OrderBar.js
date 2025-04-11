@@ -110,7 +110,6 @@ export default function ActivityBar() {
         </dl>
       </div>
       <SupplierCharts />
-      <RecentOrders />
     </>
   );
 }

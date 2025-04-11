@@ -33,7 +33,7 @@ const MonthlyLineChart = () => {
         labels: [1, 5, 10, 15, 20, 25, 30],
         datasets: [
           {
-            label: "Daily Sales Orders This Month",
+            label: "Daily Orders This Month",
             data: [80, 90, 75, 85, 95, 100, 110],
             fill: false,
             backgroundColor: "rgba(75,192,192,0.4)",
@@ -70,7 +70,7 @@ const YearlyBarChart = () => {
         ],
         datasets: [
           {
-            label: "Monthly Sales Orders This Year",
+            label: "Monthly Orders This Year",
             data: [120, 150, 180, 200, 170, 190, 220, 210, 230, 240, 250, 260],
             backgroundColor: "rgba(255, 99, 132, 0.2)",
             borderColor: "rgba(255, 99, 132, 1)",

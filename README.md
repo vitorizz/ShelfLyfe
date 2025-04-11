@@ -1,4 +1,4 @@
-# Shelflife
+# ShelfLyfe
 
 ## Team members
 

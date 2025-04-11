@@ -3,26 +3,15 @@ import { PolarArea } from "react-chartjs-2";
 import Chart from "chart.js/auto"; // Auto-registers all components
 
 const categoryData = {
-  Appetizers: {
-    labels: [
-      "Caesar Salad",
-      "Bruschetta",
-      "Mozzarella Sticks",
-      "Stuffed Mushrooms",
-    ],
+  "Appetizers": {
+    labels: ["Caesar Salad", "Bruschetta", "Mozzarella Sticks", "Stuffed Mushrooms"],
     data: [15, 22, 18, 12],
   },
   "Main Meals": {
-    labels: [
-      "Margherita Pizza",
-      "Chicken Parmesan",
-      "Grilled Salmon",
-      "Fettucine Alfredo",
-      "BBQ Ribs",
-    ],
+    labels: ["Margherita Pizza", "Chicken Parmesan", "Grilled Salmon", "Fettucine Alfredo", "BBQ Ribs"],
     data: [37, 30, 22, 25, 32],
   },
-  Desserts: {
+  "Desserts": {
     labels: ["Brownies", "Cheesecake", "Ice Cream", "Tiramisu"],
     data: [22, 19, 17, 15],
   },
@@ -69,10 +58,8 @@ export default function BestSellerPie() {
   return (
     <div className="pt-5 h-screen px-6">
       <div className="mb-4">
-        <label
-          htmlFor="category"
-          className="block text-sm font-medium text-gray-700"
-        >
+
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">
           Select Category
         </label>
         <select
@@ -83,9 +70,7 @@ export default function BestSellerPie() {
           className="mt-1 block w-full max-w-xs rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         >
           {Object.keys(categoryData).map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
+            <option key={category} value={category}>{category}</option>
           ))}
         </select>
       </div>

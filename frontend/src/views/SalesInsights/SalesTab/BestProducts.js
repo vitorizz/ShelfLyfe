@@ -9,16 +9,20 @@ const stats = {
       "Most Popular Appetizer",
       "Best Selling Dish",
       "Most Popular Desert",
+      "Most Consumed Ingredient",
+      "Highest Rated Dish",
     ],
-    stat: ["Bruschetta", "Margherita Pizza", "Brownies"],
+    stat: ["Bruschetta", "Margherita Pizza", "Brownies", "Tomatoes", "BBQ Ribs"],
   },
   "Worst Sellers": {
     name: [
       "Worst Selling Appetizer",
       "Worst Selling Dish",
       "Worst Selling Desert",
+      "Least Consumed Ingredient",
+      "Lowest Rated Dish",
     ],
-    stat: ["Stuffed Mushrooms", "Veggie Pizza", "Cheesecake"],
+    stat: ["Stuffed Mushrooms", "Veggie Pizza", "Cheesecake", "Anchovies", "Fruit Salad"],
   },
 };
 
@@ -35,10 +39,7 @@ export default function BestProducts() {
     <div className="pt-10">
       <SectionLabel title="Top Menu Items" subtitle="Last 30 Days" />
 
-      <label
-        htmlFor="category"
-        className="block text-sm font-medium text-gray-700 mt-4"
-      >
+      <label htmlFor="category" className="block text-sm font-medium text-gray-700 mt-4">
         Select Category
       </label>
       <select
@@ -49,9 +50,7 @@ export default function BestProducts() {
         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
       >
         {categories.map((category) => (
-          <option key={category} value={category}>
-            {category}
-          </option>
+          <option key={category} value={category}>{category}</option>
         ))}
       </select>
 
@@ -73,3 +72,4 @@ export default function BestProducts() {
     </div>
   );
 }
+

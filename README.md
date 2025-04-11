@@ -1,5 +1,15 @@
 # ShelfLyfe
 
+## Team members
+
+Vito Rizzuto 40246408    
+
+Justin Sciortino 40247931
+
+Edward Villamaria 40172621
+
+Carlo Ramadori 40243639
+
 ## Installation and running the backend
 
 Python 3.13 must be used (download at https://www.python.org/)
